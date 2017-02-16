@@ -1,10 +1,3 @@
-//next
-//install webpack to transpile es6
-//css - jquery animations when adding and removing, spinner while loading?
-//use "get data slowly setInterval()" for testing?
-//propper error handling
-//db rules (including chekcing types)
-
 'use strict'
 
 $(document).ready(function(){
