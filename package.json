@@ -1,0 +1,27 @@
+{
+  "name": "commendations",
+  "version": "1.0.0",
+  "description": "Commendations system for Decoy School",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-latest": "^6.22.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sass": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4lefts/commendations.git"
+  },
+  "author": "Stephen Ball",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/4lefts/commendations/issues"
+  },
+  "homepage": "https://github.com/4lefts/commendations#readme"
+}
