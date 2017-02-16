@@ -1,7 +1,7 @@
 //next
-//build form -> post data
 //install webpack to transpile es6
-//css
+//css - jquery animations when adding and removing, spinner while loading?
+//use "get data slowly setInterval()" for testing?
 //propper error handling
 //db rules (including chekcing types)
 
