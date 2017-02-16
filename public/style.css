@@ -462,13 +462,10 @@ p {
   font-family: "Open Sans", sans-serif;
 }
 
-.banner, .header {
+.header {
   background-color: #aaa;
   color: white;
   padding: 0 15px;
-}
-
-.header {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
@@ -482,10 +479,11 @@ p {
 }
 
 .header button {
-  height: 35px;
-  width: 100px;
-  color: #aaa;
-  background-color: #fff;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: #fff;
+  background-color: transparent;
   font-size: 0.8em;
   line-height: 35px;
   text-align: center;
@@ -493,8 +491,18 @@ p {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   box-sizing: border-box;
+  display: inline-block;
+}
+
+.header button:hover {
+  color: #aaa;
+  background-color: #fff;
+  border-color: #aaa;
+}
+
+.header div h3 {
   display: inline-block;
 }
 
@@ -503,6 +511,7 @@ form {
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
+  margin: 10px 0;
 }
 
 form input, form textarea {
@@ -518,10 +527,11 @@ form textarea {
 }
 
 form button {
-  height: 35px;
-  width: 100px;
-  color: #aaa;
-  background-color: #fff;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: #fff;
+  background-color: transparent;
   font-size: 0.8em;
   line-height: 35px;
   text-align: center;
@@ -529,8 +539,21 @@ form button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   box-sizing: border-box;
+  border-color: #ccc;
+  color: #aaa;
+}
+
+form button:hover {
+  color: #aaa;
+  background-color: #fff;
+  border-color: #aaa;
+}
+
+form button:hover {
+  color: #fff;
+  background: #aaa;
 }
 
 .hidden {

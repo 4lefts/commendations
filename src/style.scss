@@ -10,11 +10,11 @@ $border-colour: #ccc;
 $background-colour: #fff;
 
 @mixin button-styles{
-    height: 35px;
-    width: 100px;
-    // padding: 0 30px;
-    color: $theme-colour;
-    background-color: $background-colour;
+    height: 38px;
+    max-width: 200px;
+    padding: 0 30px;
+    color: $background-colour;
+    background-color: transparent;
     font-size: 0.8em;
     line-height: 35px;
     text-align: center;
@@ -22,8 +22,13 @@ $background-colour: #fff;
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
-    border: 1px solid $border-colour;
+    border: 1px solid $background-colour;
     box-sizing: border-box;
+    &:hover{
+      color: $theme-colour;
+      background-color: $background-colour;
+      border-color: $theme-colour;
+    }
 }
 
 .container{
@@ -42,13 +47,10 @@ p{
   font-family: $body-font;
 }
 
-.banner, .header{
+.header{
   background-color: $theme-colour;
   color: white;
   padding: 0 15px;
-}
-
-.header{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -58,11 +60,15 @@ p{
     @include button-styles();
     display: inline-block;
   }
+  div h3{
+    display: inline-block;
+  }
 }
 
 form{
   display: flex;
   flex-direction: column;
+  margin: 10px 0;
   input, textarea{
     margin: 10px 0;
     padding: 10px;
@@ -75,6 +81,12 @@ form{
   }
   button{
     @include button-styles();
+    border-color: $border-colour;
+    color: $theme-colour;
+    &:hover{
+      color: $background-colour;
+      background: $theme-colour;
+    }
   }
 }
 
