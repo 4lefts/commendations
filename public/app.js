@@ -109,7 +109,7 @@ $(document).ready(function(){
         reason: reason,
         displayName: usr.displayName,
         uid: usr.uid,
-        timestamps: t
+        timestamp: t
       }
       const newKey = ref.push().key
       ref.child(newKey).set(newData)
