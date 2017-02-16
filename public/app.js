@@ -78,7 +78,7 @@ $(document).ready(function () {
         userDbRef = updateDbRef(user.uid, dbRef);
         attachCommendationListeners(userDbRef);
         $loginCtrl.addClass('hidden');
-        $logoutCtrl.find('span').text(user.displayName);
+        $logoutCtrl.find('h3').text("(" + user.displayName + ")");
         $logoutCtrl.removeClass('hidden');
         $commendationsForm.removeClass('hidden');
         console.log("signed in as " + user.uid);
@@ -123,13 +123,13 @@ $(document).ready(function () {
 
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n          <div class=\"commendation\">\n            <header>\n              <h3>" + val.name + " - <span>" + val.className + "</span></h3>\n              <h4>" + val.date + "</h4>\n              <button>Print</button>\n              <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n            </header>\n            <p>" + val.reason + "</p>\n            <p>By " + val.displayName + "</p>\n          </div>\n        ";
+      var html = "\n          <div class=\"commendation\">\n            <div class=\"header\">\n              <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n              <div>\n                <button>Print</button>\n                <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n              </div>\n            </div>\n            <p>" + val.reason + "</p>\n            <p>By " + val.displayName + "</p>\n          </div>\n        ";
       $commendationsContainer.prepend(html);
     }
 
     function removeOneCommendation(snapshot) {
       var $idToRemove = $("button[data-id=\"" + snapshot.key + "\"]");
-      var $divToRemove = $idToRemove.closest('div');
+      var $divToRemove = $idToRemove.closest('.commendation');
       $divToRemove.remove();
     }
 

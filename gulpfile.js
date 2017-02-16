@@ -19,7 +19,7 @@ gulp.task('transpileEs6', () => {
 gulp.task('transpileCss', () => {
   return gulp.src('src/**/*.scss')
     .pipe(sass({
-      outputStyle: 'compressed',
+      outputStyle: 'expanded',
     }))
     .pipe(prefix({
       browsers: ['last 2 versions'],

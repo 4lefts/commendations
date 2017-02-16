@@ -76,7 +76,7 @@ $(document).ready(function(){
          userDbRef = updateDbRef(user.uid, dbRef)
          attachCommendationListeners(userDbRef)
          $loginCtrl.addClass('hidden')
-         $logoutCtrl.find('span').text(user.displayName)
+         $logoutCtrl.find('h3').text(`(${user.displayName})`)
          $logoutCtrl.removeClass('hidden')
          $commendationsForm.removeClass('hidden')
          console.log(`signed in as ${user.uid}`)
@@ -119,12 +119,13 @@ $(document).ready(function(){
       const val = snapshot.val()
       const html = `
           <div class="commendation">
-            <header>
-              <h3>${val.name} - <span>${val.className}</span></h3>
-              <h4>${val.date}</h4>
-              <button>Print</button>
-              <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
-            </header>
+            <div class="header">
+              <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
+              <div>
+                <button>Print</button>
+                <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
+              </div>
+            </div>
             <p>${val.reason}</p>
             <p>By ${val.displayName}</p>
           </div>
@@ -134,7 +135,7 @@ $(document).ready(function(){
 
     function removeOneCommendation(snapshot){
       const $idToRemove = $(`button[data-id="${snapshot.key}"]`)
-      const $divToRemove = $idToRemove.closest('div')
+      const $divToRemove = $idToRemove.closest('.commendation')
       $divToRemove.remove()
     }
 

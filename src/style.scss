@@ -1,16 +1,91 @@
-* {
-  margin: 0;
-  padding: 0;
+// css reset
+@import 'normalise';
+
+//web fonts
+$heading-font: 'Varela Round', sans-serif;
+$body-font: 'Open Sans', sans-serif;
+
+$theme-colour: #aaa;
+$border-colour: #ccc;
+$background-colour: #fff;
+
+@mixin button-styles{
+    height: 35px;
+    width: 100px;
+    // padding: 0 30px;
+    color: $theme-colour;
+    background-color: $background-colour;
+    font-size: 0.8em;
+    line-height: 35px;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid $border-colour;
+    box-sizing: border-box;
 }
 
-body {
-  font-family: arial;
+.container{
+  padding: 0 10px;
+  max-width: 960px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  font-size: 16px;
 }
+
+h1, h2, h3, h4, h5, h6, input, textarea, button{
+  font-family: $heading-font;
+}
+
+p{
+  font-family: $body-font;
+}
+
+.banner, .header{
+  background-color: $theme-colour;
+  color: white;
+  padding: 0 15px;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  button{
+    @include button-styles();
+    display: inline-block;
+  }
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  input, textarea{
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid $border-colour;
+  }
+  textarea{
+    height: 200px;
+    border: 1px solid $border-colour;
+  }
+  button{
+    @include button-styles();
+  }
+}
+
 
 .hidden{
   display: none;
 }
-.commendation{
-  border: 1px solid black;
-  margin: 20px;
-}
+
+
+
+// .commendation{
+//   border: 1px solid black;
+//   margin: 20px;
+// }
