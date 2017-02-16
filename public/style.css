@@ -485,7 +485,7 @@ p {
   color: #fff;
   background-color: transparent;
   font-size: 0.8em;
-  line-height: 35px;
+  line-height: 38px;
   text-align: center;
   white-space: nowrap;
   text-transform: uppercase;
@@ -500,6 +500,11 @@ p {
   color: #aaa;
   background-color: #fff;
   border-color: #aaa;
+}
+
+.header button:focus {
+  border-color: #b3b3b3;
+  outline: none;
 }
 
 .header div h3 {
@@ -519,6 +524,11 @@ form input, form textarea {
   padding: 10px;
   border: none;
   border-bottom: 1px solid #ccc;
+  outline: none;
+}
+
+form input:focus, form textarea:focus {
+  border-color: gray;
 }
 
 form textarea {
@@ -533,7 +543,7 @@ form button {
   color: #fff;
   background-color: transparent;
   font-size: 0.8em;
-  line-height: 35px;
+  line-height: 38px;
   text-align: center;
   white-space: nowrap;
   text-transform: uppercase;
@@ -551,9 +561,18 @@ form button:hover {
   border-color: #aaa;
 }
 
+form button:focus {
+  border-color: #b3b3b3;
+  outline: none;
+}
+
 form button:hover {
   color: #fff;
   background: #aaa;
+}
+
+form button:focus {
+  border-color: gray;
 }
 
 .hidden {

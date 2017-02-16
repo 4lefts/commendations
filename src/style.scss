@@ -16,7 +16,7 @@ $background-colour: #fff;
     color: $background-colour;
     background-color: transparent;
     font-size: 0.8em;
-    line-height: 35px;
+    line-height: 38px;
     text-align: center;
     white-space: nowrap;
     text-transform: uppercase;
@@ -28,6 +28,10 @@ $background-colour: #fff;
       color: $theme-colour;
       background-color: $background-colour;
       border-color: $theme-colour;
+    }
+    &:focus{
+      border-color: darken($background-colour, 30%);
+      outline: none;
     }
 }
 
@@ -74,6 +78,10 @@ form{
     padding: 10px;
     border: none;
     border-bottom: 1px solid $border-colour;
+    outline: none;
+    &:focus{
+      border-color: darken($border-colour, 30%)
+    }
   }
   textarea{
     height: 200px;
@@ -86,6 +94,9 @@ form{
     &:hover{
       color: $background-colour;
       background: $theme-colour;
+    }
+    &:focus{
+      border-color: darken($border-colour, 30%)
     }
   }
 }
