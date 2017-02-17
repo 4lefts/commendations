@@ -120,7 +120,7 @@ $(document).ready(function(){
       const val = snapshot.val()
       const html = `
           <div class="commendation">
-            <div class="header">
+            <div class="header commendation-header">
               <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
               <div>
                 <button>Print</button>

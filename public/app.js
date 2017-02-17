@@ -124,7 +124,7 @@ $(document).ready(function () {
 
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n          <div class=\"commendation\">\n            <div class=\"header\">\n              <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n              <div>\n                <button>Print</button>\n                <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n              </div>\n            </div>\n            <p>" + val.reason + "</p>\n            <p>By " + val.displayName + "</p>\n          </div>\n        ";
+      var html = "\n          <div class=\"commendation\">\n            <div class=\"header commendation-header\">\n              <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n              <div>\n                <button>Print</button>\n                <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n              </div>\n            </div>\n            <p>" + val.reason + "</p>\n            <p>By " + val.displayName + "</p>\n          </div>\n        ";
       $commendationsContainer.prepend(html);
     }
 

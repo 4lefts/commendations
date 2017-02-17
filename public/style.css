@@ -446,8 +446,13 @@ template {
   display: none;
 }
 
+body {
+  color: #454552;
+  background-color: #d8e9ef;
+}
+
 .container {
-  padding: 0 10px;
+  padding: 0 5px;
   max-width: 960px;
   box-sizing: border-box;
   margin: 0 auto;
@@ -455,17 +460,26 @@ template {
 }
 
 h1, h2, h3, h4, h5, h6, input, textarea, button {
-  font-family: "Varela Round", sans-serif;
+  font-family: "Varela", sans-serif;
 }
 
 p {
   font-family: "Open Sans", sans-serif;
 }
 
+.header-outer {
+  background-color: white;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
 .header {
-  background-color: #aaa;
-  color: white;
-  padding: 0 15px;
+  max-width: 960px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: white;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
@@ -482,7 +496,7 @@ p {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: #fff;
+  color: #4ae1d3;
   background-color: transparent;
   font-size: 0.8em;
   line-height: 38px;
@@ -491,56 +505,63 @@ p {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #fff;
+  border: 1px solid #4ae1d3;
   box-sizing: border-box;
   display: inline-block;
 }
 
 .header button:hover {
-  color: #aaa;
-  background-color: #fff;
-  border-color: #aaa;
+  color: #189388;
+  border-color: #189388;
 }
 
 .header button:focus {
-  border-color: #b3b3b3;
+  border-color: #11675f;
+  color: #11675f;
   outline: none;
 }
 
-.header div h3 {
+.header h1, .header h3 {
+  margin: 0;
   display: inline-block;
 }
 
+.commendation-header {
+  border-bottom: 1px solid #4ae1d3;
+}
+
 form {
+  background-color: white;
+  padding: 0px 15px 15px 15px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 form input, form textarea {
-  margin: 10px 0;
+  margin: 15px 0;
   padding: 10px;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #8f8fa1;
   outline: none;
 }
 
 form input:focus, form textarea:focus {
-  border-color: gray;
+  border-color: #454552;
 }
 
 form textarea {
   height: 200px;
-  border: 1px solid #ccc;
+  border: 1px solid #8f8fa1;
 }
 
 form button {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: #fff;
+  color: #4ae1d3;
   background-color: transparent;
   font-size: 0.8em;
   line-height: 38px;
@@ -549,30 +570,32 @@ form button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #fff;
+  border: 1px solid #4ae1d3;
   box-sizing: border-box;
-  border-color: #ccc;
-  color: #aaa;
 }
 
 form button:hover {
-  color: #aaa;
-  background-color: #fff;
-  border-color: #aaa;
+  color: #189388;
+  border-color: #189388;
 }
 
 form button:focus {
-  border-color: #b3b3b3;
+  border-color: #11675f;
+  color: #11675f;
   outline: none;
 }
 
-form button:hover {
-  color: #fff;
-  background: #aaa;
+.commendation {
+  margin-bottom: 15px;
+  background-color: white;
 }
 
-form button:focus {
-  border-color: gray;
+.commendation p {
+  padding: 0 15px;
+}
+
+.commendation p:last-child {
+  padding-bottom: 15px;
 }
 
 .hidden {
