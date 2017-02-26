@@ -57,9 +57,18 @@ $(document).ready(function () {
       submitCommendation($name.val(), $className.val(), $reason.val(), usr, ref);
     });
 
+    //print one commendation
+    $commendationsContainer.on('click', '.print-btn', function (event) {
+      var html = $(event.target).closest('.commendation').html();
+      var w = window.open();
+      $(w.document.head).html("<link rel=\"stylesheet\" href=\"./style.css\">");
+      $(w.document.body).html(html);
+      w.print();
+    });
+
     //delete one commendation
     $commendationsContainer.on('click', '.delete-btn', function (event) {
-      var dataId = $(event.target).attr('data-id');
+      var dataId = $(event.target).closest('.commendation').attr('data-id');
       console.log("deleting: " + dataId);
       userDbRef.child(dataId).remove().then(function () {
         console.log('removed from fb!');
@@ -126,7 +135,7 @@ $(document).ready(function () {
 
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n      <div class=\"commendation\">\n        <div class=\"header commendation-header\">\n          <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n          <div>\n            <button>Print</button>\n            <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p>" + val.reason + "</p>\n        <p>By " + val.displayName + "</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\">\n        <div class=\"header commendation-header\">\n          <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p>" + val.reason + "</p>\n        <p>By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
     }
 
@@ -134,8 +143,7 @@ $(document).ready(function () {
     function removeOneCommendation(snapshot) {
       var _this = this;
 
-      var $idToRemove = $("button[data-id=\"" + snapshot.key + "\"]");
-      var $divToRemove = $idToRemove.closest('.commendation');
+      var $divToRemove = $("div[data-id=\"" + snapshot.key + "\"]");
       $divToRemove.slideUp(300, function () {
         $(_this).remove();
       });

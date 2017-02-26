@@ -641,3 +641,9 @@ form button:hover, form button:focus {
 .hidden {
   display: none;
 }
+
+@media print {
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+}

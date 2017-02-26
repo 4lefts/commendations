@@ -53,9 +53,18 @@ $(document).ready(() => {
       submitCommendation($name.val(), $className.val(), $reason.val(), usr, ref)
     })
 
+    //print one commendation
+    $commendationsContainer.on('click', '.print-btn', (event) => {
+      const html = $(event.target).closest('.commendation').html()
+      const w = window.open()
+      $(w.document.head).html(`<link rel="stylesheet" href="./style.css">`)
+      $(w.document.body).html(html)
+      w.print()
+    })
+
     //delete one commendation
     $commendationsContainer.on('click', '.delete-btn', (event) => {
-      const dataId = $(event.target).attr('data-id')
+      const dataId = $(event.target).closest('.commendation').attr('data-id')
       console.log(`deleting: ${dataId}`)
       userDbRef.child(dataId).remove().then(() => {
         console.log('removed from fb!')
@@ -143,12 +152,12 @@ $(document).ready(() => {
     function renderCommendation(snapshot){
       const val = snapshot.val()
       const html = `
-      <div class="commendation">
+      <div class="commendation" data-id="${snapshot.key}">
         <div class="header commendation-header">
           <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
           <div>
-            <button>Print</button>
-            <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
+            <button class="print-btn">Print</button>
+            <button class="delete-btn">Delete</button>
           </div>
         </div>
         <p>${val.reason}</p>
@@ -160,8 +169,7 @@ $(document).ready(() => {
 
     //called by delete buttons
     function removeOneCommendation(snapshot){
-      const $idToRemove = $(`button[data-id="${snapshot.key}"]`)
-      const $divToRemove = $idToRemove.closest('.commendation')
+      const $divToRemove = $(`div[data-id="${snapshot.key}"]`)
       $divToRemove.slideUp(300, () => {$(this).remove()})
     }
 

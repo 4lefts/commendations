@@ -186,3 +186,9 @@ form{
 .hidden{
   display: none;
 }
+
+@media print {
+  body{
+    font-family: 'Roboto', sans-serif;
+  }
+}
