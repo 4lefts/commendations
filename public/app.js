@@ -31,7 +31,7 @@ $(document).ready(function () {
     var $sendButton = $('#send-button');
 
     // cache header for logging in and out
-    var $headerContainer = $('#header-container');
+    var $headerContainer = $('#header-container-outer');
 
     //EVENT LISTENERS//
 
@@ -114,11 +114,11 @@ $(document).ready(function () {
 
     function renderHeader(usr) {
       if (usr) {
-        var html = "\n        <div class=\"header main-header\">\n          <h1>Decoy School Commendations</h1>\n          <button id=\"logout-btn\">Log Out</button>\n        </div>\n        <div class=\"header sub-header\">\n          <p>Logged in as " + usr.displayName + "</p>\n        </div>\n        ";
+        var html = "\n        <div id=\"header-container\">\n          <div class=\"header main-header\">\n            <h1>Decoy School Commendations</h1>\n            <button id=\"logout-btn\">Log Out</button>\n          </div>\n        </div>\n        <div id=\"sub-header-container\">\n          <div class=\"header sub-header\">\n            <p>Logged in as " + usr.displayName + "</p>\n          </div>\n        </div>\n        ";
         console.log("signed in as " + usr.uid);
         $headerContainer.html(html);
       } else {
-        var _html = "\n        <div  class=\"header\">\n          <h1>Decoy School Commendations</h1>\n          <button id=\"login-btn\">Log In</button>\n        </div>\n        <div class=\"header sub-header\">\n          <p>Not logged in</p>\n        </div>\n        ";
+        var _html = "\n        <div id=\"header-container\">\n          <div  class=\"header\">\n            <h1>Decoy School Commendations</h1>\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        <div id=\"sub-header-container\">\n          <div class=\"header sub-header logged-out\">\n            <p>Not logged in</p>\n          </div>\n        </div>\n        ";
         console.log('signed out!');
         $headerContainer.html(_html);
       }
@@ -126,7 +126,7 @@ $(document).ready(function () {
 
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n      <div class=\"commendation\">\n      <div class=\"header commendation-header\">\n      <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n      <div>\n      <button>Print</button>\n      <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n      </div>\n      </div>\n      <p>" + val.reason + "</p>\n      <p>By " + val.displayName + "</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"commendation\">\n        <div class=\"header commendation-header\">\n          <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n          <div>\n            <button>Print</button>\n            <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p>" + val.reason + "</p>\n        <p>By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
     }
 

@@ -449,7 +449,7 @@ template {
 body {
   color: rgba(0, 0, 0, 0.7);
   font-family: 'Roboto', sans-serif;
-  background-color: #eeeeee;
+  background-color: #EEEEEE;
 }
 
 .container {
@@ -464,12 +464,19 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   font-weight: 400;
 }
 
-#header-container {
+#header-container-outer {
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+}
+
+#header-container, #sub-header-container {
   background-color: #689F38;
   width: 100%;
   text-align: center;
   margin: 0 auto;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.23), 0 3px 12px rgba(0, 0, 0, 0.16);
+}
+
+#sub-header-container {
+  background-color: #558B2F;
 }
 
 .header {
@@ -524,6 +531,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 }
 
 .sub-header {
+  background-color: #558B2F;
   padding: 0 15px;
 }
 
@@ -560,8 +568,8 @@ form button {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: rgba(0, 0, 0, 0.7);
-  background-color: #FFFF00;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #558B2F;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
@@ -570,7 +578,7 @@ form button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #FFFF00;
+  border: 1px solid #558B2F;
   border-radius: 2px;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   transition: all .3s ease;
@@ -585,6 +593,40 @@ form button:hover, form button:focus {
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   margin-bottom: 15px;
   background-color: white;
+}
+
+.commendation .commendation-header {
+  background-color: #689F38;
+}
+
+.commendation .commendation-header button {
+  box-sizing: border-box;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: rgba(85, 139, 47, 0.7);
+  background-color: white;
+  font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: 38px;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
+}
+
+.commendation .commendation-header button:hover, .commendation .commendation-header button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+
+.commendation .commendation-header button:first-child {
+  margin-right: 15px;
 }
 
 .commendation p {

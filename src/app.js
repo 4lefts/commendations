@@ -31,7 +31,7 @@ $(document).ready(function(){
     const $sendButton = $('#send-button')
 
     // cache header for logging in and out
-    const $headerContainer =  $('#header-container')
+    const $headerContainer =  $('#header-container-outer')
 
     //EVENT LISTENERS//
 
@@ -107,24 +107,32 @@ $(document).ready(function(){
     function renderHeader(usr){
       if(usr){
         const html = `
-        <div class="header main-header">
-          <h1>Decoy School Commendations</h1>
-          <button id="logout-btn">Log Out</button>
+        <div id="header-container">
+          <div class="header main-header">
+            <h1>Decoy School Commendations</h1>
+            <button id="logout-btn">Log Out</button>
+          </div>
         </div>
-        <div class="header sub-header">
-          <p>Logged in as ${usr.displayName}</p>
+        <div id="sub-header-container">
+          <div class="header sub-header">
+            <p>Logged in as ${usr.displayName}</p>
+          </div>
         </div>
         `
         console.log(`signed in as ${usr.uid}`)
         $headerContainer.html(html)
       } else {
         const html = `
-        <div  class="header">
-          <h1>Decoy School Commendations</h1>
-          <button id="login-btn">Log In</button>
+        <div id="header-container">
+          <div  class="header">
+            <h1>Decoy School Commendations</h1>
+            <button id="login-btn">Log In</button>
+          </div>
         </div>
-        <div class="header sub-header">
-          <p>Not logged in</p>
+        <div id="sub-header-container">
+          <div class="header sub-header logged-out">
+            <p>Not logged in</p>
+          </div>
         </div>
         `
         console.log('signed out!')
@@ -136,15 +144,15 @@ $(document).ready(function(){
       const val = snapshot.val()
       const html = `
       <div class="commendation">
-      <div class="header commendation-header">
-      <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
-      <div>
-      <button>Print</button>
-      <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
-      </div>
-      </div>
-      <p>${val.reason}</p>
-      <p>By ${val.displayName}</p>
+        <div class="header commendation-header">
+          <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
+          <div>
+            <button>Print</button>
+            <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
+          </div>
+        </div>
+        <p>${val.reason}</p>
+        <p>By ${val.displayName}</p>
       </div>
       `
       $commendationsContainer.prepend(html)
