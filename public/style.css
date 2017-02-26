@@ -447,9 +447,10 @@ template {
 }
 
 body {
-  color: rgba(0, 0, 0, 0.7);
-  font-family: 'Roboto', sans-serif;
   background-color: #EEEEEE;
+  font-family: 'Roboto', sans-serif;
+  color: rgba(0, 0, 0, 0.7);
+  -webkit-font-smoothing: antialiased;
 }
 
 .container {
@@ -604,7 +605,7 @@ form button:hover, form button:focus {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: rgba(85, 139, 47, 0.7);
+  color: rgba(0, 0, 0, 0.7);
   background-color: white;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);

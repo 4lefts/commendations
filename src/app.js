@@ -1,6 +1,6 @@
 'use strict'
 
-$(document).ready(function(){
+$(document).ready(() => {
   (function(){
     // Initialize Firebase
     const config = {

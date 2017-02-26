@@ -72,9 +72,10 @@ $gutter: 15px;
 }
 
 body {
-  color: $text-colour;
-  font-family: 'Roboto', sans-serif;
   background-color: $background-colour;
+  font-family: 'Roboto', sans-serif;
+  color: $text-colour;
+  -webkit-font-smoothing: antialiased;
 }
 
 .container{
@@ -168,8 +169,8 @@ form{
   .commendation-header{
     background-color: $main_colour;
     button{
-      @include button-styles(white, $main_darker);
-      &:first-child{ 
+      @include button-styles(white, $text-colour);
+      &:first-child{
         margin-right: $gutter;
       }
     }
