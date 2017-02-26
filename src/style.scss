@@ -2,47 +2,79 @@
 @import 'normalise';
 
 //web fonts
-$heading-font: 'Varela', sans-serif;
-$body-font: 'Open Sans', sans-serif;
+// $font: 'Roboto', sans-serif;
 
 //palette
-$theme-colour: #4ae1d3;
-$alert-colour: #e85a71;
-$background-colour: #d8e9ef;
-$text-colour: #454552;
+$background-colour: #eeeeee;
+$text-colour: rgba(black, 0.7);
+
+$main_colour: #689F38;
+$main_lighter: #7CB342;
+$main_darker: #558B2F;
+
+$accent_colour: #FFFF00;
 
 //spacing
 $gutter: 15px;
 
-body {
-  color: $text-colour;
-  background-color: $background-colour;
+@mixin button-styles($colour){
+  box-sizing: border-box;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: rgba(black, 0.7);
+  background-color: $colour;
+  font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(black, 0.2);
+  line-height: 38px;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid $colour;
+  border-radius: 2px;
+  @include card(1);
+  transition: all .3s ease;
+  &:hover, &:focus{
+    outline: 0;
+    @include card(3);
+  }
 }
 
-@mixin button-styles{
-    height: 38px;
-    max-width: 200px;
-    padding: 0 30px;
-    color: $theme-colour;
-    background-color: transparent;
-    font-size: 0.8em;
-    line-height: 38px;
-    text-align: center;
-    white-space: nowrap;
-    text-transform: uppercase;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1px solid $theme-colour;
-    box-sizing: border-box;
-    &:hover{
-      color: darken($theme-colour, 25%);
-      border-color: darken($theme-colour, 25%);
-    }
-    &:focus{
-      border-color: darken($theme-colour, 35%);
-      color: darken($theme-colour, 35%);
-      outline: none;
-    }
+//shadows - from https://css-tricks.com/snippets/sass/material-shadows-mixin/
+//$depth takes a number 1 - 5 for the depth
+@mixin card($depth){
+	@if $depth < 1{
+		box-shadow: none;
+	} @else if $depth > 5{
+		@warn "invalid $depth for mixin 'card'";
+	} @else {
+		box-shadow: bottom-shadow($depth), top-shadow($depth);
+	}
+}
+
+//use these two functions in mixin above
+@function top-shadow($depth){
+	$primary-offset: nth(1.5 3 10 14 19, $depth) * 1px;
+	$blur: nth(1.5 3 10 14 19, $depth) * 4px;
+	$color: rgba(black, nth(.12 .16 .19 .25 .30, $depth));
+
+	@return 0 $primary-offset $blur $color;
+}
+
+@function bottom-shadow($depth){
+	$primary-offset: nth(1.5 3 6 10 15, $depth) * 1px;
+	$blur: nth(1.5 3 3 5 6, $depth) * 4px;
+	$color: rgba(black, nth(.24 .23 .23 .22 .22, $depth));
+
+	@return 0 $primary-offset $blur $color;
+}
+
+body {
+  color: $text-colour;
+  font-family: 'Roboto', sans-serif;
+  background-color: $background-colour;
 }
 
 .container{
@@ -54,17 +86,15 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, input, textarea, button{
-  font-family: $heading-font;
+  font-weight: 400;
 }
 
-p{
-  font-family: $body-font;
-}
-.header-outer{
-  background-color: white;
+#header-container{
+  background-color: $main_colour;
   width: 100%;
   text-align: center;
   margin: 0 auto;
+  @include card(2);
 }
 
 .header{
@@ -72,15 +102,16 @@ p{
   margin: 0 auto;
   box-sizing: border-box;
   padding: $gutter;
-  background-color: white;
+  background-color: $main_colour;
+  color: white;
+  text-shadow: 0 1px 3px rgba($main_colour, 0.3);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   button{
-    @include button-styles();
-    display: inline-block;
+    @include button-styles($accent_colour);
   }
   h1, h3{
     margin: 0;
@@ -88,11 +119,13 @@ p{
   }
 }
 
-.commendation-header{
-  border-bottom: 1px solid $theme-colour;
+.sub-header{
+  padding: 0 $gutter;
 }
 
+
 form{
+  @include card(1);
   background-color: white;
   padding: 0px $gutter $gutter $gutter;
   display: flex;
@@ -113,11 +146,12 @@ form{
     border: 1px solid lighten($text-colour, 30%);
   }
   button{
-    @include button-styles();
+    @include button-styles($accent_colour);
   }
 }
 
 .commendation{
+  @include card(1);
   margin-bottom: $gutter;
   background-color: white;
   p{

@@ -30,25 +30,21 @@ $(document).ready(function () {
     var $reason = $('#reason');
     var $sendButton = $('#send-button');
 
-    // cache elements for logging in
-    var $loginCtrl = $('#login-ctrl');
-    var $loginBtn = $loginCtrl.find('button');
-
-    // ...and out
-    var $logoutCtrl = $('#logout-ctrl');
-    var $logoutBtn = $logoutCtrl.find('button');
+    // cache header for logging in and out
+    var $headerContainer = $('#header-container');
 
     //EVENT LISTENERS//
 
     //add listener to login button
-    $loginBtn.on('click', function () {
+    $headerContainer.on('click', '#login-btn', function () {
       firebase.auth().signInWithPopup(provider).then(function (result) {}).catch(function (err) {
         return console.log(err);
       });
     });
 
     //and logout button
-    $logoutBtn.on('click', function () {
+    $headerContainer.on('click', '#logout-btn', function () {
+      console.log('trying to logout');
       firebase.auth().signOut().then(function () {}, function (err) {
         return console.log('error:' + err);
       });
@@ -77,25 +73,19 @@ $(document).ready(function () {
       if (user) {
         userDbRef = updateDbRef(user.uid, dbRef);
         attachCommendationListeners(userDbRef);
-        $loginCtrl.addClass('hidden');
-        var names = user.displayName.split(' ');
-        $logoutCtrl.find('span').text("" + names[0]);
-        $logoutCtrl.removeClass('hidden');
         $commendationsForm.removeClass('hidden');
-        console.log("signed in as " + user.uid);
       } else {
         removeAllCommendations($commendationsContainer);
-        $logoutCtrl.addClass('hidden');
         $commendationsForm.addClass('hidden');
-        $loginCtrl.removeClass('hidden');
-        console.log('signed out!');
       }
+      renderHeader(user);
     });
 
     function updateDbRef(userId, ref) {
       return ref.child(userId);
     }
 
+    //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref) {
       ref.on('child_added', function (snapshot) {
         return renderCommendation(snapshot);
@@ -122,18 +112,36 @@ $(document).ready(function () {
       ref.child(newKey).set(newData);
     }
 
+    function renderHeader(usr) {
+      if (usr) {
+        var html = "\n        <div class=\"header main-header\">\n          <h1>Decoy School Commendations</h1>\n          <button id=\"logout-btn\">Log Out</button>\n        </div>\n        <div class=\"header sub-header\">\n          <p>Logged in as " + usr.displayName + "</p>\n        </div>\n        ";
+        console.log("signed in as " + usr.uid);
+        $headerContainer.html(html);
+      } else {
+        var _html = "\n        <div  class=\"header\">\n          <h1>Decoy School Commendations</h1>\n          <button id=\"login-btn\">Log In</button>\n        </div>\n        <div class=\"header sub-header\">\n          <p>Not logged in</p>\n        </div>\n        ";
+        console.log('signed out!');
+        $headerContainer.html(_html);
+      }
+    }
+
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n          <div class=\"commendation\">\n            <div class=\"header commendation-header\">\n              <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n              <div>\n                <button>Print</button>\n                <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n              </div>\n            </div>\n            <p>" + val.reason + "</p>\n            <p>By " + val.displayName + "</p>\n          </div>\n        ";
+      var html = "\n      <div class=\"commendation\">\n      <div class=\"header commendation-header\">\n      <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n      <div>\n      <button>Print</button>\n      <button data-id=\"" + snapshot.key + "\" class=\"delete-btn\">Delete</button>\n      </div>\n      </div>\n      <p>" + val.reason + "</p>\n      <p>By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
     }
 
+    //called by delete buttons
     function removeOneCommendation(snapshot) {
+      var _this = this;
+
       var $idToRemove = $("button[data-id=\"" + snapshot.key + "\"]");
       var $divToRemove = $idToRemove.closest('.commendation');
-      $divToRemove.remove();
+      $divToRemove.slideUp(300, function () {
+        $(_this).remove();
+      });
     }
 
+    //callend on logout
     function removeAllCommendations($container) {
       $container.find('div').remove();
     }

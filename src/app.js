@@ -30,26 +30,20 @@ $(document).ready(function(){
     const $reason = $('#reason')
     const $sendButton = $('#send-button')
 
-    // cache elements for logging in
-    const $loginCtrl = $('#login-ctrl')
-    const $loginBtn = $loginCtrl.find('button')
-
-    // ...and out
-    const $logoutCtrl = $('#logout-ctrl')
-    const $logoutBtn = $logoutCtrl.find('button')
+    // cache header for logging in and out
+    const $headerContainer =  $('#header-container')
 
     //EVENT LISTENERS//
 
     //add listener to login button
-    $loginBtn.on('click', () => {
-      firebase.auth().signInWithPopup(provider).then((result) => {
-      }).catch((err) => console.log(err))
+    $headerContainer.on('click', '#login-btn', () => {
+      firebase.auth().signInWithPopup(provider).then((result) => {}).catch((err) => console.log(err))
     })
 
     //and logout button
-    $logoutBtn.on('click', () => {
-      firebase.auth().signOut().then(() => {
-      }, (err) => console.log('error:' + err) )
+    $headerContainer.on('click', '#logout-btn', () => {
+      console.log('trying to logout')
+      firebase.auth().signOut().then(() => {}, (err) => console.log('error:' + err) )
     })
 
     //add form listener
@@ -73,27 +67,21 @@ $(document).ready(function(){
     //observe changes to auth state
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
-         userDbRef = updateDbRef(user.uid, dbRef)
-         attachCommendationListeners(userDbRef)
-         $loginCtrl.addClass('hidden')
-         const names = user.displayName.split(' ')
-         $logoutCtrl.find('span').text(`${names[0]}`)
-         $logoutCtrl.removeClass('hidden')
-         $commendationsForm.removeClass('hidden')
-         console.log(`signed in as ${user.uid}`)
-       } else {
-         removeAllCommendations($commendationsContainer)
-         $logoutCtrl.addClass('hidden')
-         $commendationsForm.addClass('hidden')
-         $loginCtrl.removeClass('hidden')
-         console.log('signed out!')
-       }
+        userDbRef = updateDbRef(user.uid, dbRef)
+        attachCommendationListeners(userDbRef)
+        $commendationsForm.removeClass('hidden')
+      } else {
+        removeAllCommendations($commendationsContainer)
+        $commendationsForm.addClass('hidden')
+      }
+      renderHeader(user)
     })
 
     function updateDbRef(userId, ref){
       return ref.child(userId)
     }
 
+    //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref){
       ref.on('child_added', (snapshot) => renderCommendation(snapshot))
       ref.on('child_removed', (snapshot) => removeOneCommendation(snapshot))
@@ -116,30 +104,60 @@ $(document).ready(function(){
       ref.child(newKey).set(newData)
     }
 
+    function renderHeader(usr){
+      if(usr){
+        const html = `
+        <div class="header main-header">
+          <h1>Decoy School Commendations</h1>
+          <button id="logout-btn">Log Out</button>
+        </div>
+        <div class="header sub-header">
+          <p>Logged in as ${usr.displayName}</p>
+        </div>
+        `
+        console.log(`signed in as ${usr.uid}`)
+        $headerContainer.html(html)
+      } else {
+        const html = `
+        <div  class="header">
+          <h1>Decoy School Commendations</h1>
+          <button id="login-btn">Log In</button>
+        </div>
+        <div class="header sub-header">
+          <p>Not logged in</p>
+        </div>
+        `
+        console.log('signed out!')
+        $headerContainer.html(html)
+      }
+    }
+
     function renderCommendation(snapshot){
       const val = snapshot.val()
       const html = `
-          <div class="commendation">
-            <div class="header commendation-header">
-              <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
-              <div>
-                <button>Print</button>
-                <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
-              </div>
-            </div>
-            <p>${val.reason}</p>
-            <p>By ${val.displayName}</p>
-          </div>
-        `
+      <div class="commendation">
+      <div class="header commendation-header">
+      <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
+      <div>
+      <button>Print</button>
+      <button data-id="${snapshot.key}" class="delete-btn">Delete</button>
+      </div>
+      </div>
+      <p>${val.reason}</p>
+      <p>By ${val.displayName}</p>
+      </div>
+      `
       $commendationsContainer.prepend(html)
     }
 
+    //called by delete buttons
     function removeOneCommendation(snapshot){
       const $idToRemove = $(`button[data-id="${snapshot.key}"]`)
       const $divToRemove = $idToRemove.closest('.commendation')
-      $divToRemove.remove()
+      $divToRemove.slideUp(300, () => {$(this).remove()})
     }
 
+    //callend on logout
     function removeAllCommendations($container){
       $container.find('div').remove()
     }

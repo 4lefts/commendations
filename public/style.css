@@ -447,8 +447,9 @@ template {
 }
 
 body {
-  color: #454552;
-  background-color: #d8e9ef;
+  color: rgba(0, 0, 0, 0.7);
+  font-family: 'Roboto', sans-serif;
+  background-color: #eeeeee;
 }
 
 .container {
@@ -460,18 +461,15 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, input, textarea, button {
-  font-family: "Varela", sans-serif;
+  font-weight: 400;
 }
 
-p {
-  font-family: "Open Sans", sans-serif;
-}
-
-.header-outer {
-  background-color: white;
+#header-container {
+  background-color: #689F38;
   width: 100%;
   text-align: center;
   margin: 0 auto;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.23), 0 3px 12px rgba(0, 0, 0, 0.16);
 }
 
 .header {
@@ -479,7 +477,9 @@ p {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 15px;
-  background-color: white;
+  background-color: #689F38;
+  color: white;
+  text-shadow: 0 1px 3px rgba(104, 159, 56, 0.3);
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
@@ -493,32 +493,29 @@ p {
 }
 
 .header button {
+  box-sizing: border-box;
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: #4ae1d3;
-  background-color: transparent;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: #FFFF00;
   font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
   text-align: center;
   white-space: nowrap;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #4ae1d3;
-  box-sizing: border-box;
-  display: inline-block;
+  border: 1px solid #FFFF00;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
 }
 
-.header button:hover {
-  color: #189388;
-  border-color: #189388;
-}
-
-.header button:focus {
-  border-color: #11675f;
-  color: #11675f;
-  outline: none;
+.header button:hover, .header button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
 .header h1, .header h3 {
@@ -526,11 +523,12 @@ p {
   display: inline-block;
 }
 
-.commendation-header {
-  border-bottom: 1px solid #4ae1d3;
+.sub-header {
+  padding: 0 15px;
 }
 
 form {
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   background-color: white;
   padding: 0px 15px 15px 15px;
   display: -ms-flexbox;
@@ -544,48 +542,47 @@ form input, form textarea {
   margin: 15px 0;
   padding: 10px;
   border: none;
-  border-bottom: 1px solid #8f8fa1;
+  border-bottom: 1px solid rgba(77, 77, 77, 0.7);
   outline: none;
 }
 
 form input:focus, form textarea:focus {
-  border-color: #454552;
+  border-color: rgba(0, 0, 0, 0.7);
 }
 
 form textarea {
   height: 200px;
-  border: 1px solid #8f8fa1;
+  border: 1px solid rgba(77, 77, 77, 0.7);
 }
 
 form button {
+  box-sizing: border-box;
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: #4ae1d3;
-  background-color: transparent;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: #FFFF00;
   font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
   text-align: center;
   white-space: nowrap;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #4ae1d3;
-  box-sizing: border-box;
+  border: 1px solid #FFFF00;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
 }
 
-form button:hover {
-  color: #189388;
-  border-color: #189388;
-}
-
-form button:focus {
-  border-color: #11675f;
-  color: #11675f;
-  outline: none;
+form button:hover, form button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
 .commendation {
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   margin-bottom: 15px;
   background-color: white;
 }
