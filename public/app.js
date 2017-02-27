@@ -59,11 +59,7 @@ $(document).ready(function () {
 
     //print one commendation
     $commendationsContainer.on('click', '.print-btn', function (event) {
-      var html = $(event.target).closest('.commendation').html();
-      var w = window.open();
-      $(w.document.head).html("<link rel=\"stylesheet\" href=\"./style.css\">");
-      $(w.document.body).html(html);
-      w.print();
+      printOneCommendation(event);
     });
 
     //delete one commendation
@@ -135,8 +131,25 @@ $(document).ready(function () {
 
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\">\n        <div class=\"header commendation-header\">\n          <h3>" + val.name + " - <span>" + val.className + "</span> - <span>(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p>" + val.reason + "</p>\n        <p>By " + val.displayName + "</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
+    }
+
+    function printOneCommendation(event) {
+      //cache elements from commendation to print
+      var $currentCommendation = $(event.target).closest('.commendation');
+      //format name/class/date
+      var name = $currentCommendation.find('.commendation-name').html();
+      var schoolClass = $currentCommendation.find('.commendation-class').html();
+      var date = $currentCommendation.find('.commendation-date').html();
+      //get reason and author
+      var reason = $currentCommendation.find('.commendation-reason').html();
+      var by = $currentCommendation.find('.commendation-by').html().slice(2);
+      //render template
+      var html = "\n      <div class=\"printing\">\n        <p>This certificate is awarded to</p>\n        <h1>" + name + "</h1>\n        <h2>in " + schoolClass + "</h2>\n        <h4>On " + date.slice(1, -1) + "</h4>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + "</p>\n        <p>Signed:</p>\n        <p>Mrs G O'Neill, headteacher</p>\n      </div>\n      ";
+      $commendationsContainer.append(html);
+      window.print();
+      $('.printing').remove();
     }
 
     //called by delete buttons

@@ -188,7 +188,15 @@ form{
 }
 
 @media print {
-  body{
-    font-family: 'Roboto', sans-serif;
+  #header-container-outer, #commendations-form, .commendation{
+    display: none;
+  }
+
+  .printing{
+    display: block;
+    button{
+      display: none;
+    }
+    //styles for printing commendation go here...
   }
 }

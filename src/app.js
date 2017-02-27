@@ -55,11 +55,7 @@ $(document).ready(() => {
 
     //print one commendation
     $commendationsContainer.on('click', '.print-btn', (event) => {
-      const html = $(event.target).closest('.commendation').html()
-      const w = window.open()
-      $(w.document.head).html(`<link rel="stylesheet" href="./style.css">`)
-      $(w.document.body).html(html)
-      w.print()
+      printOneCommendation(event)
     })
 
     //delete one commendation
@@ -154,17 +150,48 @@ $(document).ready(() => {
       const html = `
       <div class="commendation" data-id="${snapshot.key}">
         <div class="header commendation-header">
-          <h3>${val.name} - <span>${val.className}</span> - <span>(${val.date})</span></h3>
+          <h3><span class="commendation-name">${val.name}</span> - <span class="commendation-class">${val.className}</span> - <span class="commendation-date">(${val.date})</span></h3>
           <div>
             <button class="print-btn">Print</button>
             <button class="delete-btn">Delete</button>
           </div>
         </div>
-        <p>${val.reason}</p>
-        <p>By ${val.displayName}</p>
+        <p class="commendation-reason">${val.reason}</p>
+        <p class="commendation-by">By ${val.displayName}</p>
       </div>
       `
       $commendationsContainer.prepend(html)
+    }
+
+    //called by the print buttons
+    function printOneCommendation(event){
+      //cache elements from commendation to print
+      const $currentCommendation = $(event.target).closest('.commendation')
+      //format name/class/date
+      const name = $currentCommendation.find('.commendation-name').html()
+      const schoolClass = $currentCommendation.find('.commendation-class').html()
+      const date = $currentCommendation.find('.commendation-date').html()
+      //get reason and author
+      const reason = $currentCommendation.find('.commendation-reason').html()
+      const by = $currentCommendation.find('.commendation-by')
+                                      .html()
+                                      .slice(2)
+      //render template
+      const html = `
+      <div class="printing">
+        <p>This certificate is awarded to</p>
+        <h1>${name}</h1>
+        <h2>in ${schoolClass}</h2>
+        <h4>On ${date.slice(1, -1)}</h4>
+        <p>For ${reason}</p>
+        <p>Nominated by ${by}</p>
+        <p>Signed:</p>
+        <p>Mrs G O'Neill, headteacher</p>
+      </div>
+      `
+      $commendationsContainer.append(html)
+      window.print()
+      $('.printing').remove()
     }
 
     //called by delete buttons

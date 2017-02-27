@@ -643,7 +643,13 @@ form button:hover, form button:focus {
 }
 
 @media print {
-  body {
-    font-family: 'Roboto', sans-serif;
+  #header-container-outer, #commendations-form, .commendation {
+    display: none;
+  }
+  .printing {
+    display: block;
+  }
+  .printing button {
+    display: none;
   }
 }
