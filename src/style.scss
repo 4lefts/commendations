@@ -193,9 +193,23 @@ form{
   }
 
   .printing{
+    print-color-adjust: exact;
     display: block;
     button{
       display: none;
+    }
+    .banner:before, {
+      content: url(http://placehold.it/200x200);
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .banner:after{
+      content: url(http://placehold.it/300x300);
+      position: absolute;
+      top: 0;
+      right: 0;
     }
     //styles for printing commendation go here...
   }

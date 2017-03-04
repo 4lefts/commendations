@@ -647,9 +647,22 @@ form button:hover, form button:focus {
     display: none;
   }
   .printing {
+    print-color-adjust: exact;
     display: block;
   }
   .printing button {
     display: none;
+  }
+  .printing .banner:before {
+    content: url(http://placehold.it/200x200);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .printing .banner:after {
+    content: url(http://placehold.it/300x300);
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 }

@@ -106,7 +106,7 @@ $(document).ready(() => {
         timestamp: t
       }
       const newKey = ref.push().key
-      ref.child(newKey).set(newData)
+      ref.child(newKey).set(newData) //error handler in here?
     }
 
     function renderHeader(usr){
@@ -167,24 +167,27 @@ $(document).ready(() => {
     function printOneCommendation(event){
       //cache elements from commendation to print
       const $currentCommendation = $(event.target).closest('.commendation')
-      //format name/class/date
+      //format name and class
       const name = $currentCommendation.find('.commendation-name').html()
       const schoolClass = $currentCommendation.find('.commendation-class').html()
-      const date = $currentCommendation.find('.commendation-date').html()
+      //slice brackets off date
+      const date = $currentCommendation.find('.commendation-date').html().slice(1, -1)
       //get reason and author
       const reason = $currentCommendation.find('.commendation-reason').html()
-      const by = $currentCommendation.find('.commendation-by')
-                                      .html()
-                                      .slice(2)
+      //slice off the word 'by'
+      const by = $currentCommendation.find('.commendation-by').html().slice(2)
       //render template
       const html = `
       <div class="printing">
+        <div class="banner">
+          <h2>Decoy Community Primary School</h2>
+          <h1>Certificate of Commendation</h1>
+        </div>
         <p>This certificate is awarded to</p>
         <h1>${name}</h1>
         <h2>in ${schoolClass}</h2>
-        <h4>On ${date.slice(1, -1)}</h4>
         <p>For ${reason}</p>
-        <p>Nominated by ${by}</p>
+        <p>Nominated by ${by}, ${date}</p>
         <p>Signed:</p>
         <p>Mrs G O'Neill, headteacher</p>
       </div>

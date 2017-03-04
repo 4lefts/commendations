@@ -2,14 +2,17 @@ const gulp = require('gulp')
 const babel = require('gulp-babel')
 const sass = require('gulp-sass')
 const prefix = require('gulp-autoprefixer')
+const plumber = require('gulp-plumber')
 
 gulp.task('moveHtml', () => {
   return gulp.src('src/**/*.html')
+    .pipe(plumber())
     .pipe(gulp.dest('public'))
 })
 
 gulp.task('transpileEs6', () => {
   return gulp.src('src/**/*.js')
+    .pipe(plumber())
     .pipe(babel({
       presets: ['latest'],
     }))
@@ -18,6 +21,7 @@ gulp.task('transpileEs6', () => {
 
 gulp.task('transpileCss', () => {
   return gulp.src('src/**/*.scss')
+    .pipe(plumber())
     .pipe(sass({
       outputStyle: 'expanded',
     }))

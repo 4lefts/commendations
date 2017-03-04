@@ -114,7 +114,7 @@ $(document).ready(function () {
         timestamp: t
       };
       var newKey = ref.push().key;
-      ref.child(newKey).set(newData);
+      ref.child(newKey).set(newData); //error handler in here?
     }
 
     function renderHeader(usr) {
@@ -135,18 +135,21 @@ $(document).ready(function () {
       $commendationsContainer.prepend(html);
     }
 
+    //called by the print buttons
     function printOneCommendation(event) {
       //cache elements from commendation to print
       var $currentCommendation = $(event.target).closest('.commendation');
-      //format name/class/date
+      //format name and class
       var name = $currentCommendation.find('.commendation-name').html();
       var schoolClass = $currentCommendation.find('.commendation-class').html();
-      var date = $currentCommendation.find('.commendation-date').html();
+      //slice brackets off date
+      var date = $currentCommendation.find('.commendation-date').html().slice(1, -1);
       //get reason and author
       var reason = $currentCommendation.find('.commendation-reason').html();
+      //slice off the word 'by'
       var by = $currentCommendation.find('.commendation-by').html().slice(2);
       //render template
-      var html = "\n      <div class=\"printing\">\n        <p>This certificate is awarded to</p>\n        <h1>" + name + "</h1>\n        <h2>in " + schoolClass + "</h2>\n        <h4>On " + date.slice(1, -1) + "</h4>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + "</p>\n        <p>Signed:</p>\n        <p>Mrs G O'Neill, headteacher</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"printing\">\n        <div class=\"banner\">\n          <h2>Decoy Community Primary School</h2>\n          <h1>Certificate of Commendation</h1>\n        </div>\n        <p>This certificate is awarded to</p>\n        <h1>" + name + "</h1>\n        <h2>in " + schoolClass + "</h2>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <p>Mrs G O'Neill, headteacher</p>\n      </div>\n      ";
       $commendationsContainer.append(html);
       window.print();
       $('.printing').remove();
