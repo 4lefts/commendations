@@ -10,6 +10,12 @@ gulp.task('moveHtml', () => {
     .pipe(gulp.dest('public'))
 })
 
+gulp.task('moveImages', () => {
+  return gulp.src('src/images/*')
+    .pipe(plumber())
+    .pipe(gulp.dest('public/images'))
+})
+
 gulp.task('transpileEs6', () => {
   return gulp.src('src/**/*.js')
     .pipe(plumber())
@@ -35,4 +41,4 @@ gulp.task('watch', () => {
   gulp.watch('src/**/*', ['default'])
 })
 
-gulp.task('default', ['moveHtml', 'transpileCss', 'transpileEs6'])
+gulp.task('default', ['moveHtml', 'moveImages', 'transpileCss', 'transpileEs6'])

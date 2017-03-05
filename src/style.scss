@@ -192,25 +192,51 @@ form{
     display: none;
   }
 
+  @page{
+      margin: 2cm;
+      background-color: white;
+      color: black;
+  }
+
   .printing{
-    print-color-adjust: exact;
+    page-break-inside: avoid;
     display: block;
+    border: 2px solid black;
+    padding: 1cm;
+
     button{
       display: none;
     }
-    .banner:before, {
-      content: url(http://placehold.it/200x200);
-      position: absolute;
-      top: 0;
-      left: 0;
+
+    .banner{
+      position: relative;
+      text-align: center;
+      .logo-left, .logo-right{
+        position: absolute;
+      }
+      .logo-left{
+          top: 0;
+          left: 0;
+      }
+      .logo-right{
+        top: 0;
+        right: 0;
+      }
     }
 
-    .banner:after{
-      content: url(http://placehold.it/300x300);
-      position: absolute;
-      top: 0;
-      right: 0;
+
+    img{
+      max-width: 100%;
+      height: auto;
     }
-    //styles for printing commendation go here...
+    // .signature{
+    //   display: block;
+    //   &:before{
+    //     content: url(./sig-temp.png);
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //   }
+    // }
   }
 }

@@ -646,23 +646,37 @@ form button:hover, form button:focus {
   #header-container-outer, #commendations-form, .commendation {
     display: none;
   }
+  @page {
+    margin: 2cm;
+    background-color: white;
+    color: black;
+  }
   .printing {
-    print-color-adjust: exact;
+    page-break-inside: avoid;
     display: block;
+    border: 2px solid black;
+    padding: 1cm;
   }
   .printing button {
     display: none;
   }
-  .printing .banner:before {
-    content: url(http://placehold.it/200x200);
+  .printing .banner {
+    position: relative;
+    text-align: center;
+  }
+  .printing .banner .logo-left, .printing .banner .logo-right {
     position: absolute;
+  }
+  .printing .banner .logo-left {
     top: 0;
     left: 0;
   }
-  .printing .banner:after {
-    content: url(http://placehold.it/300x300);
-    position: absolute;
+  .printing .banner .logo-right {
     top: 0;
     right: 0;
+  }
+  .printing img {
+    max-width: 100%;
+    height: auto;
   }
 }
