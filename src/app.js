@@ -131,16 +131,12 @@ $(document).ready(() => {
         $headerContainer.html(html)
       } else {
         const html = `
-        <div id="header-container">
-          <div  class="header">
-            <h1>Decoy School Commendations</h1>
+        <div id="login-screen">
+            <h3>Weclome to</h3>
+            <h1>Decoy Community Primary School</h1>
+            <h1>Commendations System</h1>
+            ${logoTemplate('#558B2F', 300)}
             <button id="login-btn">Log In</button>
-          </div>
-        </div>
-        <div id="sub-header-container">
-          <div class="header sub-header logged-out">
-            <p>Not logged in</p>
-          </div>
         </div>
         `
         console.log('signed out!')
@@ -189,21 +185,24 @@ $(document).ready(() => {
         <div class="banner">
           <div class="logo-left">${printLogo}</div>
           <h2>Decoy Community Primary School</h2>
-          <h1>Certificate of Commendation</h1>
+          <h2>Certificate of Commendation</h2>
           <div class="logo-right">${printLogo}</div>
           <p>This certificate is awarded to</p>
           <h1>${name}</h1>
-          <h2>in ${schoolClass}</h2>
+          <p>in ${schoolClass}</p>
         </div>
         <p>For ${reason}</p>
         <p>Nominated by ${by}, ${date}</p>
         <p>Signed:</p>
-        <img src="./images/sig-temp.png">
-        <p>Mrs G O'Neill, headteacher</p>
+        <div class="sig-box">
+          <img src="./images/sig-temp.png">
+          <p>Mrs G O'Neill, headteacher</p>
+        </div>
       </div>
       `
       $commendationsContainer.append(html)
-
+      //set timeout is a hack to make sure imgs in the printed template are
+      //loaded. can be removed once inline svgs are in place.
       setTimeout(() => {
         window.print()
         $('.printing').remove()

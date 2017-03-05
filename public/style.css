@@ -531,6 +531,64 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   display: inline-block;
 }
 
+#login-screen {
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding: 15px;
+  background-color: white;
+  color: #558B2F;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+
+#login-screen h1, #login-screen h3 {
+  text-align: center;
+  margin: 0.125em;
+}
+
+#login-screen h3 {
+  font-size: 1.6em;
+}
+
+#login-screen h1 {
+  font-size: 3em;
+}
+
+#login-screen button {
+  box-sizing: border-box;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #558B2F;
+  font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: 38px;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #558B2F;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
+  margin-top: 15px;
+  width: 300px;
+}
+
+#login-screen button:hover, #login-screen button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+
 .sub-header {
   background-color: #558B2F;
   padding: 0 15px;
@@ -654,11 +712,18 @@ form button:hover, form button:focus {
   .printing {
     page-break-inside: avoid;
     display: block;
-    border: 2px solid black;
+    border: 1.5px solid black;
     padding: 1cm;
   }
   .printing button {
     display: none;
+  }
+  .printing p {
+    margin: 0.7em 0;
+  }
+  .printing h1, .printing h2, .printing h3 {
+    margin: 0.2em 0;
+    font-family: 'Shadows Into Light Two', cursive;
   }
   .printing .banner {
     position: relative;
@@ -666,16 +731,28 @@ form button:hover, form button:focus {
   }
   .printing .banner .logo-left, .printing .banner .logo-right {
     position: absolute;
+    transform: translateY(-50%);
   }
   .printing .banner .logo-left {
-    top: 0;
+    top: 50%;
     left: 0;
   }
   .printing .banner .logo-right {
-    top: 0;
+    top: 50%;
     right: 0;
   }
-  .printing img {
+  .printing .sig-box {
+    width: 100%;
+    height: auto;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: row;
+        flex-direction: row;
+    -ms-flex-align: end;
+        align-items: flex-end;
+  }
+  .printing .sig-box img {
+    margin-right: 1cm;
     max-width: 100%;
     height: auto;
   }

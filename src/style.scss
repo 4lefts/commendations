@@ -119,11 +119,39 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   justify-content: space-between;
   align-items: center;
   button{
-    @include button-styles($accent_colour, black);
+      @include button-styles($accent_colour, black);
   }
   h1, h3{
     margin: 0;
     display: inline-block;
+  }
+}
+
+#login-screen{
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding: $gutter;
+  background-color: white;
+  color: $main_darker;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1, h3{
+    text-align: center;
+    margin: 0.125em;
+  }
+  h3{
+    font-size: 1.6em;
+  }
+  h1{
+    font-size: 3em;
+  }
+  button{
+    @include button-styles($main_darker, white);
+    margin-top: $gutter;
+    width: 300px;
   }
 }
 
@@ -201,11 +229,20 @@ form{
   .printing{
     page-break-inside: avoid;
     display: block;
-    border: 2px solid black;
+    border: 1.5px solid black;
     padding: 1cm;
 
     button{
       display: none;
+    }
+
+    p{
+      margin: 0.7em 0;
+    }
+
+    h1, h2, h3{
+      margin: 0.2em 0;
+      font-family: 'Shadows Into Light Two', cursive;
     }
 
     .banner{
@@ -213,30 +250,29 @@ form{
       text-align: center;
       .logo-left, .logo-right{
         position: absolute;
+        transform: translateY(-50%);
       }
       .logo-left{
-          top: 0;
+          top: 50%;
           left: 0;
       }
       .logo-right{
-        top: 0;
+        top: 50%;
         right: 0;
       }
     }
 
-
-    img{
-      max-width: 100%;
-      height: auto;
+    .sig-box{
+      width: 100%;
+      height:  auto;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      img{
+        margin-right: 1cm;
+        max-width: 100%;
+        height: auto;
+      }
     }
-    // .signature{
-    //   display: block;
-    //   &:before{
-    //     content: url(./sig-temp.png);
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //   }
-    // }
   }
 }

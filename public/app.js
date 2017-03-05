@@ -126,7 +126,7 @@ $(document).ready(function () {
         console.log("signed in as " + usr.uid);
         $headerContainer.html(html);
       } else {
-        var _html = "\n        <div id=\"header-container\">\n          <div  class=\"header\">\n            <h1>Decoy School Commendations</h1>\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        <div id=\"sub-header-container\">\n          <div class=\"header sub-header logged-out\">\n            <p>Not logged in</p>\n          </div>\n        </div>\n        ";
+        var _html = "\n        <div id=\"login-screen\">\n            <h3>Weclome to</h3>\n            <h1>Decoy Community Primary School</h1>\n            <h1>Commendations System</h1>\n            " + logoTemplate('#558B2F', 300) + "\n            <button id=\"login-btn\">Log In</button>\n        </div>\n        ";
         console.log('signed out!');
         $headerContainer.html(_html);
       }
@@ -155,9 +155,10 @@ $(document).ready(function () {
       var by = $currentCommendation.find('.commendation-by').html().slice(2);
       var printLogo = logoTemplate('#000000', 100);
       //render template
-      var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h1>Certificate of Commendation</h1>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <h2>in " + schoolClass + "</h2>\n        </div>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <img src=\"./images/sig-temp.png\">\n        <p>Mrs G O'Neill, headteacher</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h2>Certificate of Commendation</h2>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <p>in " + schoolClass + "</p>\n        </div>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <div class=\"sig-box\">\n          <img src=\"./images/sig-temp.png\">\n          <p>Mrs G O'Neill, headteacher</p>\n        </div>\n      </div>\n      ";
       $commendationsContainer.append(html);
-
+      //set timeout is a hack to make sure imgs in the printed template are
+      //loaded. can be removed once inline svgs are in place.
       setTimeout(function () {
         window.print();
         $('.printing').remove();
