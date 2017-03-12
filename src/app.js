@@ -15,9 +15,9 @@ $(document).ready(() => {
     //auth
     const provider = new firebase.auth.GoogleAuthProvider()
 
-    //db variables
-    let dbRef = firebase.database().ref().child('commendations')
-    let userDbRef
+    //db refs
+    const commendationsRef = firebase.database().ref().child('commendations')
+    const adminsDbRef = firebase.database().ref().child('admins')
 
     //CACHE DOM//
 
@@ -42,15 +42,14 @@ $(document).ready(() => {
 
     //and logout button
     $headerContainer.on('click', '#logout-btn', () => {
-      console.log('trying to logout')
+      console.log('logging out!')
       firebase.auth().signOut().then(() => {}, (err) => console.log('error:' + err) )
     })
 
-    //add form listener
+    //add form listener to send commendation
     $sendButton.on('click', () => {
       const usr = firebase.auth().currentUser
-      const ref = userDbRef
-      submitCommendation($name.val(), $className.val(), $reason.val(), usr, ref)
+      submitCommendation($name.val(), $className.val(), $reason.val(), usr)
     })
 
     //print one commendation
@@ -60,9 +59,11 @@ $(document).ready(() => {
 
     //delete one commendation
     $commendationsContainer.on('click', '.delete-btn', (event) => {
-      const dataId = $(event.target).closest('.commendation').attr('data-id')
+      const $commendationToDelete =$(event.target).closest('.commendation')
+      const dataId = $commendationToDelete.attr('data-id')
+      const uid = $commendationToDelete.attr('data-owner')
       console.log(`deleting: ${dataId}`)
-      userDbRef.child(dataId).remove().then(() => {
+      commendationsRef.child(uid).child(dataId).remove().then(() => {
         console.log('removed from fb!')
       }).catch((err) => {
         console.log(error)
@@ -72,8 +73,16 @@ $(document).ready(() => {
     //observe changes to auth state
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
-        userDbRef = updateDbRef(user.uid, dbRef)
-        attachCommendationListeners(userDbRef)
+        let isAdmin = false
+        adminsDbRef.once('value').then((snapshot) => {
+          if(snapshot.val().hasOwnProperty(user.uid)){
+            isAdmin = true
+          } else {
+            isAdmin = false
+          }
+          console.log(`are you an admin?: ${isAdmin}`)
+          makeCommendationRefsArray(isAdmin, user.uid)
+        })
         $commendationsForm.removeClass('hidden')
       } else {
         removeAllCommendations($commendationsContainer)
@@ -82,19 +91,40 @@ $(document).ready(() => {
       renderHeader(user)
     })
 
-    //called to get new ref when auth state changes
-    function updateDbRef(userId, ref){
-      return ref.child(userId)
+    //sort of middleware - creates an array of uids to attach listners to
+    function makeCommendationRefsArray(isAd, uid){
+      //get firebase to listen for child event on each of the db refs
+      //for a normal user, this will be an array with only one element,
+      //while admins will get everyone
+      const commendationRefs = []
+      //listen for everything (isAdmin == true)
+      if(isAd){
+        commendationsRef.once('value').then((snapshot) => {
+          for(let key in snapshot.val()){
+            commendationRefs.push(key)
+          }
+          console.log(commendationRefs)
+          commendationRefs.forEach((elem) => {
+            attachCommendationListeners(elem)
+          })
+        })
+        } else { //or listen for specific user
+          commendationRefs.push(uid)
+          console.log(commendationRefs)
+          commendationRefs.forEach((elem) => {
+            attachCommendationListeners(elem)
+          })
+        }
     }
 
     //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref){
-      ref.on('child_added', (snapshot) => renderCommendation(snapshot))
-      ref.on('child_removed', (snapshot) => removeOneCommendation(snapshot))
+      commendationsRef.child(ref).on('child_added', (snapshot) => renderCommendation(snapshot))
+      commendationsRef.child(ref).on('child_removed', (snapshot) => removeOneCommendation(snapshot))
     }
 
     //called be the submit button
-    function submitCommendation(name, className, reason, usr, ref){
+    function submitCommendation(name, className, reason, usr){
       const d = new Date()
       const t = d.getTime()
       const today = d.toLocaleDateString('en-GB')
@@ -107,8 +137,8 @@ $(document).ready(() => {
         uid: usr.uid,
         timestamp: t
       }
-      const newKey = ref.push().key
-      ref.child(newKey).set(newData) //error handler in here?
+      const newKey = commendationsRef.child(usr.uid).push().key
+      commendationsRef.child(usr.uid).child(newKey).set(newData) //error handler in here?
     }
 
     //called when auth state changes
@@ -148,9 +178,8 @@ $(document).ready(() => {
     function renderCommendation(snapshot){
       const val = snapshot.val()
       const html = `
-      <div class="commendation" data-id="${snapshot.key}">
+      <div class="commendation" data-id="${snapshot.key}" data-owner="${val.uid}">
         <div class="header commendation-header">
-
           <h3><span class="commendation-name">${val.name}</span> - <span class="commendation-class">${val.className}</span> - <span class="commendation-date">(${val.date})</span></h3>
           <div>
             <button class="print-btn">Print</button>
@@ -158,7 +187,7 @@ $(document).ready(() => {
           </div>
         </div>
         <p class="commendation-reason">${val.reason}</p>
-        <p class="commendation-by">By ${val.displayName}</p>
+        <p class="commendation-by">By ${val.displayName} (${val.uid})</p>
       </div>
       `
       $commendationsContainer.prepend(html)

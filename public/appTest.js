@@ -15,10 +15,8 @@ $(document).ready(function () {
     //auth
     var provider = new firebase.auth.GoogleAuthProvider();
 
-    //db refs
-    var commendationsRef = firebase.database().ref().child('commendations');
-    var adminsDbRef = firebase.database().ref().child('admins');
-
+    //db
+    var dbRef = firebase.database().ref().child('commendations');
     //CACHE DOM//
 
     var $commendationsContainer = $('#commendations-container');
@@ -44,16 +42,16 @@ $(document).ready(function () {
 
     //and logout button
     $headerContainer.on('click', '#logout-btn', function () {
-      console.log('logging out!');
+      console.log('trying to logout');
       firebase.auth().signOut().then(function () {}, function (err) {
         return console.log('error:' + err);
       });
     });
 
-    //add form listener to send commendation
+    //add form listener
     $sendButton.on('click', function () {
       var usr = firebase.auth().currentUser;
-      submitCommendation($name.val(), $className.val(), $reason.val(), usr);
+      submitCommendation($name.val(), $className.val(), $reason.val(), usr, dbRef);
     });
 
     //print one commendation
@@ -63,11 +61,9 @@ $(document).ready(function () {
 
     //delete one commendation
     $commendationsContainer.on('click', '.delete-btn', function (event) {
-      var $commendationToDelete = $(event.target).closest('.commendation');
-      var dataId = $commendationToDelete.attr('data-id');
-      var uid = $commendationToDelete.attr('data-owner');
+      var dataId = $(event.target).closest('.commendation').attr('data-id');
       console.log("deleting: " + dataId);
-      commendationsRef.child(uid).child(dataId).remove().then(function () {
+      dbRef.child(dataId).remove().then(function () {
         console.log('removed from fb!');
       }).catch(function (err) {
         console.log(error);
@@ -77,16 +73,8 @@ $(document).ready(function () {
     //observe changes to auth state
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        var isAdmin = false;
-        adminsDbRef.once('value').then(function (snapshot) {
-          if (snapshot.val().hasOwnProperty(user.uid)) {
-            isAdmin = true;
-          } else {
-            isAdmin = false;
-          }
-          console.log("are you an admin?: " + isAdmin);
-          makeCommendationRefsArray(isAdmin, user.uid);
-        });
+        // userDbRef = updateDbRef(user.uid, dbRef)
+        attachCommendationListeners(dbRef);
         $commendationsForm.removeClass('hidden');
       } else {
         removeAllCommendations($commendationsContainer);
@@ -95,45 +83,23 @@ $(document).ready(function () {
       renderHeader(user);
     });
 
-    //sort of middleware - creates an array of uids to attach listners to
-    function makeCommendationRefsArray(isAd, uid) {
-      //get firebase to listen for child event on each of the db refs
-      //for a normal user, this will be an array with only one element,
-      //while admins will get everyone
-      var commendationRefs = [];
-      //listen for everything (isAdmin == true)
-      if (isAd) {
-        commendationsRef.once('value').then(function (snapshot) {
-          for (var key in snapshot.val()) {
-            commendationRefs.push(key);
-          }
-          console.log(commendationRefs);
-          commendationRefs.forEach(function (elem) {
-            attachCommendationListeners(elem);
-          });
-        });
-      } else {
-        //or listen for specific user
-        commendationRefs.push(uid);
-        console.log(commendationRefs);
-        commendationRefs.forEach(function (elem) {
-          attachCommendationListeners(elem);
-        });
-      }
-    }
+    //called to get new ref when auth state changes
+    // function updateDbRef(userId, ref){
+    //   return ref.child(userId)
+    // }
 
     //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref) {
-      commendationsRef.child(ref).on('child_added', function (snapshot) {
+      ref.on('child_added', function (snapshot) {
         return renderCommendation(snapshot);
       });
-      commendationsRef.child(ref).on('child_removed', function (snapshot) {
+      ref.on('child_removed', function (snapshot) {
         return removeOneCommendation(snapshot);
       });
     }
 
     //called be the submit button
-    function submitCommendation(name, className, reason, usr) {
+    function submitCommendation(name, className, reason, usr, ref) {
       var d = new Date();
       var t = d.getTime();
       var today = d.toLocaleDateString('en-GB');
@@ -146,8 +112,8 @@ $(document).ready(function () {
         uid: usr.uid,
         timestamp: t
       };
-      var newKey = commendationsRef.child(usr.uid).push().key;
-      commendationsRef.child(usr.uid).child(newKey).set(newData); //error handler in here?
+      var newKey = ref.push().key;
+      ref.child(newKey).set(newData); //error handler in here?
     }
 
     //called when auth state changes
@@ -165,8 +131,9 @@ $(document).ready(function () {
 
     //called when children are added to db reference
     function renderCommendation(snapshot) {
+      console.log('hello render!' + snapshot);
       var val = snapshot.val();
-      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + " (" + val.uid + ")</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\">\n        <div class=\"header commendation-header\">\n\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
     }
 

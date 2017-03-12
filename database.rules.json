@@ -1,6 +1,15 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "admins": {
+      ".read": "true",
+      ".write": "false"
+    },
+    "commendations": {
+      ".read": "root.child('admins').hasChild(auth.uid)",
+      "$uid":{
+       	".read": "auth.uid == $uid",
+       	".write": "auth.uid == $uid || root.child('admins').hasChild(auth.uid)"
+      }
+    }
   }
 }
