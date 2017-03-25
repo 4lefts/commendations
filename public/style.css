@@ -648,6 +648,37 @@ form button:hover, form button:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
+#date-filter-container input {
+  min-width: 50%;
+  margin-right: 15px;
+}
+
+#date-filter-container button {
+  box-sizing: border-box;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #558B2F;
+  font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: 38px;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #558B2F;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
+}
+
+#date-filter-container button:hover, #date-filter-container button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+
 .commendation {
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   margin-bottom: 15px;
@@ -714,6 +745,7 @@ form button:hover, form button:focus {
     display: block;
     border: 1.5px solid black;
     padding: 1cm;
+    margin-bottom: 1cm;
   }
   .printing button {
     display: none;

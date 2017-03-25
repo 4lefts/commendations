@@ -190,6 +190,16 @@ form{
   }
 }
 
+#date-filter-container{
+  input{
+    min-width: 50%;
+    margin-right: $gutter;
+  }
+  button{
+    @include button-styles($main_darker, white);
+  }
+}
+
 .commendation{
   @include card(1);
   margin-bottom: $gutter;
@@ -231,6 +241,7 @@ form{
     display: block;
     border: 1.5px solid black;
     padding: 1cm;
+    margin-bottom: 1cm;
 
     button{
       display: none;
