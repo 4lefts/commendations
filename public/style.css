@@ -701,7 +701,7 @@ form button:hover, form button:focus {
 }
 
 @media print {
-  #header-container-outer, #commendations-form, .commendation {
+  #header-container-outer, #commendations-form, #controls-form, .commendation {
     display: none;
   }
   @page {

@@ -20,7 +20,6 @@ $(document).ready(function () {
     var adminsDbRef = firebase.database().ref().child('admins');
 
     //CACHE DOM//
-
     var $commendationsContainer = $('#commendations-container');
 
     //form elements
@@ -29,6 +28,10 @@ $(document).ready(function () {
     var $className = $('#class-name');
     var $reason = $('#reason');
     var $sendButton = $('#send-button');
+
+    //controls for filtering and printing all
+    var $controlsForm = $('#controls-form');
+    var $printAllButton = $('#print-all-button');
 
     // cache header for logging in and out
     var $headerContainer = $('#header-container-outer');
@@ -54,6 +57,7 @@ $(document).ready(function () {
     $sendButton.on('click', function () {
       var usr = firebase.auth().currentUser;
       submitCommendation($name.val(), $className.val(), $reason.val(), usr);
+      return false;
     });
 
     //print one commendation
@@ -74,6 +78,11 @@ $(document).ready(function () {
       });
     });
 
+    $printAllButton.on('click', function () {
+      printAllCommendations();
+      return false;
+    });
+
     //observe changes to auth state
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -86,11 +95,18 @@ $(document).ready(function () {
           }
           console.log("are you an admin?: " + isAdmin);
           makeCommendationRefsArray(isAdmin, user.uid);
+          if (isAdmin) {
+            $controlsForm.find('h2').text('All Commendations');
+          } else {
+            $controlsForm.find('h2').text('My Commendations');
+          }
         });
         $commendationsForm.removeClass('hidden');
+        $controlsForm.removeClass('hidden');
       } else {
         removeAllCommendations($commendationsContainer);
         $commendationsForm.addClass('hidden');
+        $controlsForm.addClass('hidden');
       }
       renderHeader(user);
     });
@@ -194,6 +210,68 @@ $(document).ready(function () {
         window.print();
         $('.printing').remove();
       }, 250);
+    }
+
+    //called by the print buttons
+    function printAllCommendations(event) {
+      console.log('hello all');
+      $('.commendation').each(function (index, value) {
+        var $curCommendation = $(value);
+        var name = $curCommendation.find('.commendation-name').html();
+        var schoolClass = $curCommendation.find('.commendation-class').html();
+        //slice off brackets:
+        var date = $curCommendation.find('.commendation-date').html().slice(1, -1);
+        var reason = $curCommendation.find('.commendation-reason').html();
+        //slice off word 'by':
+        var by = $curCommendation.find('.commendation-by').html().slice(2);
+        var printLogo = logoTemplate('#000000', 100);
+        var html = "\n        <div class=\"printing\">\n         <div class=\"banner\">\n           <div class=\"logo-left\">" + printLogo + "</div>\n             <h2>Decoy Community Primary School</h2>\n             <h2>Certificate of Commendation</h2>\n           <div class=\"logo-right\">" + printLogo + "</div>\n           <p>This certificate is awarded to</p>\n           <h1>" + name + "</h1>\n           <p>in " + schoolClass + "</p>\n         </div>\n           <p>For " + reason + "</p>\n           <p>Nominated by " + by + ", " + date + "</p>\n           <p>Signed:</p>\n         <div class=\"sig-box\">\n           <img src=\"./images/sig-temp.png\">\n           <p>Mrs G O'Neill, headteacher</p>\n         </div>\n        </div>\n        ";
+        console.log(html);
+      });
+
+      // //cache elements from commendation to print
+      // // const id = $elem.attr('data-id')
+      // //format name and class
+      // const name = $(this).find('.commendation-name').html()
+      // const schoolClass = $(this).find('.commendation-class').html()
+      // //slice brackets off date
+      // const date = $(this).find('.commendation-date').html().slice(1, -1)
+      // //get reason and author
+      // const reason = $(this).find('.commendation-reason').html()
+      // //slice off the word 'by'
+      // const by = $(this).find('.commendation-by').html().slice(2)
+      // const printLogo = logoTemplate('#000000', 100)
+      // //render template
+      // const html = `
+      // <div class="printing" id="printing-${id}">
+      //   <div class="banner">
+      //     <div class="logo-left">${printLogo}</div>
+      //       <h2>Decoy Community Primary School</h2>
+      //       <h2>Certificate of Commendation</h2>
+      //     <div class="logo-right">${printLogo}</div>
+      //     <p>This certificate is awarded to</p>
+      //     <h1>${name}</h1>
+      //     <p>in ${schoolClass}</p>
+      //   </div>
+      //     <p>For ${reason}</p>
+      //     <p>Nominated by ${by}, ${date}</p>
+      //     <p>Signed:</p>
+      //   <div class="sig-box">
+      //     <img src="./images/sig-temp.png">
+      //     <p>Mrs G O'Neill, headteacher</p>
+      //   </div>
+      // </div>
+      // `
+      // return html
+
+
+      // $commendationsContainer.append(html)
+      // //set timeout is a hack to make sure imgs in the printed template are
+      // //loaded. can be removed once inline svgs are in place.
+      // setTimeout(() => {
+      //   window.print()
+      //   $('.printing').remove()
+      // }, 250)
     }
 
     //called by delete buttons (when children are removed from the db ref)
