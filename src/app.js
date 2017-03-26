@@ -19,6 +19,20 @@ $(document).ready(() => {
     const commendationsRef = firebase.database().ref().child('commendations')
     const adminsDbRef = firebase.database().ref().child('admins')
 
+    //set initial filter date as the beginning of current academic year
+    let filterDate = setInitialFilterDate()
+    //helper function to get yyyy-mm-dd string of start of current academic year
+    function setInitialFilterDate(){
+      const tempD = new Date()
+      let tempY
+      if(tempD.getMonth() < 8){
+        tempY = tempD.getFullYear() - 1
+      } else {
+        tempY = tempD.getFullYear()
+      }
+      return `${tempY}-09-01`
+    }
+
     //CACHE DOM//
     const $commendationsContainer = $('#commendations-container')
 
@@ -78,7 +92,8 @@ $(document).ready(() => {
     $controlsForm.on('click', '#date-filter-button', (event) =>{
       const $dateInput = $(event.target).prev()
       const dateString = $dateInput.val()
-      filterByDate(dateString)
+      filterDate = dateString
+      console.log(`new filter date is: ${filterDate}`)
       $dateInput.val('')
       return false
     })
@@ -145,7 +160,8 @@ $(document).ready(() => {
 
     //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref){
-      commendationsRef.child(ref).on('child_added', (snapshot) => renderCommendation(snapshot))
+      //db listeners for child events also query according to date
+      commendationsRef.child(ref).orderByChild('date').startAt(filterDate).on('child_added', (snapshot) => renderCommendation(snapshot))
       commendationsRef.child(ref).on('child_removed', (snapshot) => removeOneCommendation(snapshot))
     }
 
@@ -153,7 +169,7 @@ $(document).ready(() => {
     function submitCommendation(name, className, reason, usr){
       const d = new Date()
       const t = d.getTime()
-      const today = d.toLocaleDateString('en-GB')
+      const today = makeDateString(d)
       const newData = {
         name: name,
         className: className,
@@ -170,6 +186,19 @@ $(document).ready(() => {
         //error popup here
         console.log(error)
       }) //error handler in here?
+    }
+
+    //helper to get date in yyyy-mm-dd format for ordering
+    function makeDateString(d){
+      let tmp = d.toDateString().split(' ').slice(1)
+      tmp[0] = monthToNumber(tmp[0])
+      const today = `${tmp[2]}-${tmp[0]}-${tmp[1]}`
+      return today
+      function monthToNumber(m){
+        //ugly hack to get jan = 1
+        const months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        return months.indexOf(m).toString()
+      }
     }
 
     //called when auth state changes
@@ -222,10 +251,6 @@ $(document).ready(() => {
       </div>
       `
       $commendationsContainer.prepend(html)
-    }
-
-    function filterByDate(filterDate){
-      console.log(filterDate)
     }
 
     //called by the print buttons

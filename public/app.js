@@ -19,6 +19,20 @@ $(document).ready(function () {
     var commendationsRef = firebase.database().ref().child('commendations');
     var adminsDbRef = firebase.database().ref().child('admins');
 
+    //set initial filter date as the beginning of current academic year
+    var filterDate = setInitialFilterDate();
+    //helper function to get yyyy-mm-dd string of start of current academic year
+    function setInitialFilterDate() {
+      var tempD = new Date();
+      var tempY = void 0;
+      if (tempD.getMonth() < 8) {
+        tempY = tempD.getFullYear() - 1;
+      } else {
+        tempY = tempD.getFullYear();
+      }
+      return tempY + "-09-01";
+    }
+
     //CACHE DOM//
     var $commendationsContainer = $('#commendations-container');
 
@@ -82,7 +96,8 @@ $(document).ready(function () {
     $controlsForm.on('click', '#date-filter-button', function (event) {
       var $dateInput = $(event.target).prev();
       var dateString = $dateInput.val();
-      filterByDate(dateString);
+      filterDate = dateString;
+      console.log("new filter date is: " + filterDate);
       $dateInput.val('');
       return false;
     });
@@ -150,7 +165,8 @@ $(document).ready(function () {
 
     //listens for child events added/removed from db, not events on the DOM
     function attachCommendationListeners(ref) {
-      commendationsRef.child(ref).on('child_added', function (snapshot) {
+      //db listeners for child events also query according to date
+      commendationsRef.child(ref).orderByChild('date').startAt(filterDate).on('child_added', function (snapshot) {
         return renderCommendation(snapshot);
       });
       commendationsRef.child(ref).on('child_removed', function (snapshot) {
@@ -162,7 +178,7 @@ $(document).ready(function () {
     function submitCommendation(name, className, reason, usr) {
       var d = new Date();
       var t = d.getTime();
-      var today = d.toLocaleDateString('en-GB');
+      var today = makeDateString(d);
       var newData = {
         name: name,
         className: className,
@@ -179,6 +195,19 @@ $(document).ready(function () {
         //error popup here
         console.log(error);
       }); //error handler in here?
+    }
+
+    //helper to get date in yyyy-mm-dd format for ordering
+    function makeDateString(d) {
+      var tmp = d.toDateString().split(' ').slice(1);
+      tmp[0] = monthToNumber(tmp[0]);
+      var today = tmp[2] + "-" + tmp[0] + "-" + tmp[1];
+      return today;
+      function monthToNumber(m) {
+        //ugly hack to get jan = 1
+        var months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return months.indexOf(m).toString();
+      }
     }
 
     //called when auth state changes
@@ -199,10 +228,6 @@ $(document).ready(function () {
       var val = snapshot.val();
       var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + " (" + val.uid + ")</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
-    }
-
-    function filterByDate(filterDate) {
-      console.log(filterDate);
     }
 
     //called by the print buttons
