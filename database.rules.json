@@ -7,8 +7,35 @@
     "commendations": {
       ".read": "root.child('admins').hasChild(auth.uid)",
       "$uid":{
-       	".read": "auth.uid == $uid",
-       	".write": "auth.uid == $uid || root.child('admins').hasChild(auth.uid)"
+      	".read": "auth.uid == $uid",
+       	".write": "auth.uid == $uid || root.child('admins').hasChild(auth.uid)",
+        "$key": {
+          ".validate": "newData.hasChildren(['name', 'className', 'date', 'reason', 'displayName', 'uid', 'timestamp'])",
+          "name": {
+            ".validate": "newData.isString()"
+          },
+          "className": {
+            ".validate": "newData.isString()"
+          },
+          "date": {
+            ".validate": "newData.isString() && newData.val().length === 10"
+          },
+          "reason": {
+            ".validate": "newData.isString()"
+          },
+          "displayName": {
+            ".validate": "newData.isString()"
+          },
+          "uid": {
+            ".validate": "newData.isString()"
+          },
+          "timestamp": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
       }
     }
   }
