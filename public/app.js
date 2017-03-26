@@ -53,9 +53,11 @@ $(document).ready(function () {
     });
 
     //add form listener to send commendation
-    $sendButton.on('click', function () {
+    $sendButton.on('click', function (event) {
       var usr = firebase.auth().currentUser;
       submitCommendation($name.val(), $className.val(), $reason.val(), usr);
+      //reset the form
+      $(event.target).closest('form').find('input:text, textarea').val('');
       return false;
     });
 
@@ -103,13 +105,17 @@ $(document).ready(function () {
           console.log("are you an admin?: " + isAdmin);
           makeCommendationRefsArray(isAdmin, user.uid);
           if (isAdmin) {
-            renderControlsForm($controlsForm);
+            $controlsForm.removeClass('hidden');
+            // renderControlsForm($controlsFormContainer)
+          } else {
+            $controlsForm.addClass('hidden');
+            // removeControlsForm($controlsFormContainer)
           }
         });
         $commendationsForm.removeClass('hidden');
       } else {
         removeAllCommendations($commendationsContainer);
-        removeControlsForm($controlsForm);
+        $controlsForm.addClass('hidden');
         $commendationsForm.addClass('hidden');
       }
       renderHeader(user);
@@ -167,7 +173,12 @@ $(document).ready(function () {
         timestamp: t
       };
       var newKey = commendationsRef.child(usr.uid).push().key;
-      commendationsRef.child(usr.uid).child(newKey).set(newData); //error handler in here?
+      commendationsRef.child(usr.uid).child(newKey).set(newData).then(function () {
+        //success pop up here
+      }).catch(function (error) {
+        //error popup here
+        console.log(error);
+      }); //error handler in here?
     }
 
     //called when auth state changes
@@ -181,13 +192,6 @@ $(document).ready(function () {
         console.log('signed out!');
         $headerContainer.html(_html);
       }
-    }
-
-    //called by change in auth state if usr is an admin
-    function renderControlsForm($container) {
-      var html = "\n        <h2>All Commendations:</h2>\n        <p>Display commendations since:</p>\n        <div id=\"date-filter-container\">\n          <input type=\"date\" id=\"date-filter\">\n          <button type=\"button\" id=\"date-filter-button\">Filter</button>\n        </div>\n        <hr>\n        <button type=\"button\" id=\"print-all-button\">Print All</button>\n      ";
-      $container.append(html);
-      $container.removeClass('hidden');
     }
 
     //called when children are added to db reference
@@ -263,13 +267,15 @@ $(document).ready(function () {
     }
 
     //called on logout by change in auth state
-    function removeControlsForm($container) {
-      $($container).html('').addClass('hidden');
-    }
-
-    //called on logout by change in auth state
     function removeAllCommendations($container) {
-      $container.find('div').remove();
+      var _this2 = this;
+
+      var $allDivs = $container.find('div');
+      $allDivs.each(function (index, value) {
+        $(value).slideUp(300, function () {
+          $(_this2).remove();
+        });
+      });
     }
 
     //returns inline svg of logo, supply size in px and colour as #

@@ -30,7 +30,16 @@
         <button type="button" id="send-button">Submit</button>
       </form>
 
-      <form id="controls-form"></form>
+      <form id="controls-form" class="hidden">
+        <h2>All Commendations:</h2>
+        <p>Display commendations since:</p>
+        <div id="date-filter-container">
+          <input type="date" id="date-filter">
+          <button type="button" id="date-filter-button">Filter</button>
+        </div>
+        <button type="button" id="print-all-button">Print All</button>
+      </form>
+
       <div id="commendations-container"></div>
     </div> <!-- end app container -->
 

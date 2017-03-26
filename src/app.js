@@ -49,9 +49,11 @@ $(document).ready(() => {
     })
 
     //add form listener to send commendation
-    $sendButton.on('click', () => {
+    $sendButton.on('click', (event) => {
       const usr = firebase.auth().currentUser
       submitCommendation($name.val(), $className.val(), $reason.val(), usr)
+      //reset the form
+      $(event.target).closest('form').find('input:text, textarea').val('')
       return false
     })
 
@@ -99,13 +101,17 @@ $(document).ready(() => {
           console.log(`are you an admin?: ${isAdmin}`)
           makeCommendationRefsArray(isAdmin, user.uid)
           if(isAdmin){
-            renderControlsForm($controlsForm)
+            $controlsForm.removeClass('hidden')
+            // renderControlsForm($controlsFormContainer)
+          } else {
+            $controlsForm.addClass('hidden')
+            // removeControlsForm($controlsFormContainer)
           }
       })
         $commendationsForm.removeClass('hidden')
       } else {
         removeAllCommendations($commendationsContainer)
-        removeControlsForm($controlsForm)
+        $controlsForm.addClass('hidden')
         $commendationsForm.addClass('hidden')
       }
       renderHeader(user)
@@ -128,13 +134,13 @@ $(document).ready(() => {
             attachCommendationListeners(elem)
           })
         })
-        } else { //or listen for specific user
-          commendationRefs.push(uid)
-          console.log(commendationRefs)
-          commendationRefs.forEach((elem) => {
-            attachCommendationListeners(elem)
-          })
-        }
+      } else { //or listen for specific user
+        commendationRefs.push(uid)
+        console.log(commendationRefs)
+        commendationRefs.forEach((elem) => {
+          attachCommendationListeners(elem)
+        })
+      }
     }
 
     //listens for child events added/removed from db, not events on the DOM
@@ -158,7 +164,12 @@ $(document).ready(() => {
         timestamp: t
       }
       const newKey = commendationsRef.child(usr.uid).push().key
-      commendationsRef.child(usr.uid).child(newKey).set(newData) //error handler in here?
+      commendationsRef.child(usr.uid).child(newKey).set(newData).then(() => {
+        //success pop up here
+      }).catch((error) => {
+        //error popup here
+        console.log(error)
+      }) //error handler in here?
     }
 
     //called when auth state changes
@@ -192,22 +203,6 @@ $(document).ready(() => {
         console.log('signed out!')
         $headerContainer.html(html)
       }
-    }
-
-    //called by change in auth state if usr is an admin
-    function renderControlsForm($container){
-      const html = `
-        <h2>All Commendations:</h2>
-        <p>Display commendations since:</p>
-        <div id="date-filter-container">
-          <input type="date" id="date-filter">
-          <button type="button" id="date-filter-button">Filter</button>
-        </div>
-        <hr>
-        <button type="button" id="print-all-button">Print All</button>
-      `
-      $container.append(html)
-      $container.removeClass('hidden')
     }
 
     //called when children are added to db reference
@@ -329,13 +324,11 @@ $(document).ready(() => {
     }
 
     //called on logout by change in auth state
-    function removeControlsForm($container){
-      $($container).html('').addClass('hidden')
-    }
-
-    //called on logout by change in auth state
     function removeAllCommendations($container){
-      $container.find('div').remove()
+      const $allDivs = $container.find('div')
+      $allDivs.each((index, value) =>{
+        $(value).slideUp(300, () => {$(this).remove()})
+      })
     }
 
     //returns inline svg of logo, supply size in px and colour as #
