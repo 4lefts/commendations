@@ -18,6 +18,7 @@ $(document).ready(function () {
     //db refs
     var commendationsRef = firebase.database().ref().child('commendations');
     var adminsDbRef = firebase.database().ref().child('admins');
+    var userRefs = [];
 
     //set initial filter date as the beginning of current academic year
     var filterDate = setInitialFilterDate();
@@ -95,8 +96,11 @@ $(document).ready(function () {
 
     $controlsForm.on('click', '#date-filter-button', function (event) {
       var $dateInput = $(event.target).prev();
-      var dateString = $dateInput.val();
-      filterDate = dateString;
+      filterDate = $dateInput.val();
+      removeAllCommendations($commendationsContainer);
+      userRefs.forEach(function (elem) {
+        attachCommendationListeners(elem, filterDate);
+      });
       console.log("new filter date is: " + filterDate);
       $dateInput.val('');
       return false;
@@ -118,7 +122,11 @@ $(document).ready(function () {
             isAdmin = false;
           }
           console.log("are you an admin?: " + isAdmin);
-          makeCommendationRefsArray(isAdmin, user.uid);
+          makeCommendationRefsArray(isAdmin, user.uid, function () {
+            userRefs.forEach(function (elem) {
+              attachCommendationListeners(elem, filterDate);
+            });
+          });
           if (isAdmin) {
             $controlsForm.removeClass('hidden');
             // renderControlsForm($controlsFormContainer)
@@ -137,39 +145,39 @@ $(document).ready(function () {
     });
 
     //sort of middleware - creates an array of uids to attach listners to
-    function makeCommendationRefsArray(isAd, uid) {
+    function makeCommendationRefsArray(isAd, uid, cb) {
       //get firebase to listen for child event on each of the db refs
       //for a normal user, this will be an array with only one element,
       //while admins will get everyone
-      var commendationRefs = [];
+      var refsArray = [];
       //listen for everything (isAdmin == true)
       if (isAd) {
+        //get all the uid's in the commendations db
         commendationsRef.once('value').then(function (snapshot) {
           for (var key in snapshot.val()) {
-            commendationRefs.push(key);
+            refsArray.push(key);
           }
-          console.log(commendationRefs);
-          commendationRefs.forEach(function (elem) {
-            attachCommendationListeners(elem);
-          });
+          console.log(refsArray);
+          userRefs = refsArray;
+          cb();
         });
       } else {
         //or listen for specific user
-        commendationRefs.push(uid);
-        console.log(commendationRefs);
-        commendationRefs.forEach(function (elem) {
-          attachCommendationListeners(elem);
-        });
+        refsArray.push(uid);
+        console.log(refsArray);
+        userRefs = refsArray;
+        cb();
       }
     }
 
     //listens for child events added/removed from db, not events on the DOM
-    function attachCommendationListeners(ref) {
+    function attachCommendationListeners(ref, dateSince) {
       //db listeners for child events also query according to date
-      commendationsRef.child(ref).orderByChild('date').startAt(filterDate).on('child_added', function (snapshot) {
+      var thisChild = commendationsRef.child(ref);
+      thisChild.orderByChild('date').startAt(dateSince).on('child_added', function (snapshot) {
         return renderCommendation(snapshot);
       });
-      commendationsRef.child(ref).on('child_removed', function (snapshot) {
+      thisChild.on('child_removed', function (snapshot) {
         return removeOneCommendation(snapshot);
       });
     }
@@ -200,13 +208,23 @@ $(document).ready(function () {
     //helper to get date in yyyy-mm-dd format for ordering
     function makeDateString(d) {
       var tmp = d.toDateString().split(' ').slice(1);
-      tmp[0] = monthToNumber(tmp[0]);
-      var today = tmp[2] + "-" + tmp[0] + "-" + tmp[1];
+      var m1 = monthToNumber(tmp[0]);
+      var m2 = zeroPad(m1);
+      var d1 = zeroPad(tmp[1]);
+      var today = tmp[2] + "-" + m2 + "-" + d1;
       return today;
       function monthToNumber(m) {
         //ugly hack to get jan = 1
         var months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        //zero pad date
         return months.indexOf(m).toString();
+      }
+      function zeroPad(s) {
+        if (s.length == 2) {
+          return s;
+        } else {
+          return '0' + s;
+        }
       }
     }
 
@@ -226,7 +244,7 @@ $(document).ready(function () {
     //called when children are added to db reference
     function renderCommendation(snapshot) {
       var val = snapshot.val();
-      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + " (" + val.uid + ")</p>\n      </div>\n      ";
+      var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + "</p>\n      </div>\n      ";
       $commendationsContainer.prepend(html);
     }
 

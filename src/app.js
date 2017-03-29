@@ -18,6 +18,7 @@ $(document).ready(() => {
     //db refs
     const commendationsRef = firebase.database().ref().child('commendations')
     const adminsDbRef = firebase.database().ref().child('admins')
+    let userRefs = []
 
     //set initial filter date as the beginning of current academic year
     let filterDate = setInitialFilterDate()
@@ -91,8 +92,11 @@ $(document).ready(() => {
 
     $controlsForm.on('click', '#date-filter-button', (event) =>{
       const $dateInput = $(event.target).prev()
-      const dateString = $dateInput.val()
-      filterDate = dateString
+      filterDate = $dateInput.val()
+      removeAllCommendations($commendationsContainer)
+      userRefs.forEach((elem) => {
+        attachCommendationListeners(elem, filterDate)
+      })
       console.log(`new filter date is: ${filterDate}`)
       $dateInput.val('')
       return false
@@ -114,7 +118,11 @@ $(document).ready(() => {
             isAdmin = false
           }
           console.log(`are you an admin?: ${isAdmin}`)
-          makeCommendationRefsArray(isAdmin, user.uid)
+          makeCommendationRefsArray(isAdmin, user.uid, () => {
+            userRefs.forEach((elem) => {
+              attachCommendationListeners(elem, filterDate)
+            })
+          })
           if(isAdmin){
             $controlsForm.removeClass('hidden')
             // renderControlsForm($controlsFormContainer)
@@ -133,36 +141,36 @@ $(document).ready(() => {
     })
 
     //sort of middleware - creates an array of uids to attach listners to
-    function makeCommendationRefsArray(isAd, uid){
+    function makeCommendationRefsArray(isAd, uid, cb){
       //get firebase to listen for child event on each of the db refs
       //for a normal user, this will be an array with only one element,
       //while admins will get everyone
-      const commendationRefs = []
+      const refsArray = []
       //listen for everything (isAdmin == true)
       if(isAd){
+        //get all the uid's in the commendations db
         commendationsRef.once('value').then((snapshot) => {
           for(let key in snapshot.val()){
-            commendationRefs.push(key)
+            refsArray.push(key)
           }
-          console.log(commendationRefs)
-          commendationRefs.forEach((elem) => {
-            attachCommendationListeners(elem)
-          })
+          console.log(refsArray)
+          userRefs = refsArray
+          cb()
         })
       } else { //or listen for specific user
-        commendationRefs.push(uid)
-        console.log(commendationRefs)
-        commendationRefs.forEach((elem) => {
-          attachCommendationListeners(elem)
-        })
+        refsArray.push(uid)
+        console.log(refsArray)
+        userRefs = refsArray
+        cb()
       }
     }
 
     //listens for child events added/removed from db, not events on the DOM
-    function attachCommendationListeners(ref){
+    function attachCommendationListeners(ref, dateSince){
       //db listeners for child events also query according to date
-      commendationsRef.child(ref).orderByChild('date').startAt(filterDate).on('child_added', (snapshot) => renderCommendation(snapshot))
-      commendationsRef.child(ref).on('child_removed', (snapshot) => removeOneCommendation(snapshot))
+      const thisChild = commendationsRef.child(ref)
+      thisChild.orderByChild('date').startAt(dateSince).on('child_added', (snapshot) => renderCommendation(snapshot))
+      thisChild.on('child_removed', (snapshot) => removeOneCommendation(snapshot))
     }
 
     //called be the submit button
@@ -190,14 +198,24 @@ $(document).ready(() => {
 
     //helper to get date in yyyy-mm-dd format for ordering
     function makeDateString(d){
-      let tmp = d.toDateString().split(' ').slice(1)
-      tmp[0] = monthToNumber(tmp[0])
-      const today = `${tmp[2]}-${tmp[0]}-${tmp[1]}`
+      const tmp = d.toDateString().split(' ').slice(1)
+      const m1 = monthToNumber(tmp[0])
+      const m2 = zeroPad(m1)
+      const d1 = zeroPad(tmp[1])
+      const today = `${tmp[2]}-${m2}-${d1}`
       return today
       function monthToNumber(m){
         //ugly hack to get jan = 1
         const months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        //zero pad date
         return months.indexOf(m).toString()
+      }
+      function zeroPad(s){
+        if(s.length == 2){
+          return s
+        } else {
+          return '0' + s
+        }
       }
     }
 
@@ -247,7 +265,7 @@ $(document).ready(() => {
           </div>
         </div>
         <p class="commendation-reason">${val.reason}</p>
-        <p class="commendation-by">By ${val.displayName} (${val.uid})</p>
+        <p class="commendation-by">By ${val.displayName}</p>
       </div>
       `
       $commendationsContainer.prepend(html)
