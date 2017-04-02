@@ -79,11 +79,17 @@ body {
 }
 
 .container{
-  padding: 0 5px;
+  padding: 0 2px;
   max-width: 960px;
   box-sizing: border-box;
-  margin: 0 auto;
   font-size: 16px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 480px) {
+  .container{
+      padding: 0 5px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, input, textarea, button{
@@ -97,7 +103,6 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
 #header-container, #sub-header-container{
   background-color: $main_colour;
   width: 100%;
-  text-align: center;
   margin: 0 auto;
 }
 
@@ -114,16 +119,46 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   color: white;
   text-shadow: 0 1px 3px rgba($main_colour, 0.3);
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
   button{
-      @include button-styles($accent_colour, black);
+    @include button-styles($accent_colour, black);
   }
-  h1, h3{
+}
+
+.main-header{
+  flex-direction: column-reverse;
+  button{
+    align-self: flex-end;
+  }
+  h1{
     margin: 0;
+    font-family: 'Shadows Into Light Two', cursive;
+    margin-top: 0.7em;
     display: inline-block;
+  }
+}
+
+.commendation-header{
+  flex-direction: column;
+  div{
+    align-self: flex-end;
+  }
+  h3{
+    margin: 1em 0;
+    display: inline-block;
+  }
+}
+
+// media queries for different types of headers
+@media screen and (min-width: 768px) {
+  .header{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    h3{
+      margin: 0;
+    }
   }
 }
 

@@ -215,7 +215,7 @@ $(document).ready(function () {
       return today;
       function monthToNumber(m) {
         //ugly hack to get jan = 1
-        var months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         //zero pad date
         return months.indexOf(m).toString();
       }

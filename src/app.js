@@ -206,7 +206,7 @@ $(document).ready(() => {
       return today
       function monthToNumber(m){
         //ugly hack to get jan = 1
-        const months = ['', 'Jan', 'Feb', 'Mar', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         //zero pad date
         return months.indexOf(m).toString()
       }

@@ -454,11 +454,17 @@ body {
 }
 
 .container {
-  padding: 0 5px;
+  padding: 0 2px;
   max-width: 960px;
   box-sizing: border-box;
-  margin: 0 auto;
   font-size: 16px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 480px) {
+  .container {
+    padding: 0 5px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6, input, textarea, button {
@@ -472,7 +478,6 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 #header-container, #sub-header-container {
   background-color: #689F38;
   width: 100%;
-  text-align: center;
   margin: 0 auto;
 }
 
@@ -490,14 +495,8 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   text-shadow: 0 1px 3px rgba(104, 159, 56, 0.3);
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: row;
-      flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  -ms-flex-pack: justify;
-      justify-content: space-between;
-  -ms-flex-align: center;
-      align-items: center;
 }
 
 .header button {
@@ -526,9 +525,52 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
-.header h1, .header h3 {
+.main-header {
+  -ms-flex-direction: column-reverse;
+      flex-direction: column-reverse;
+}
+
+.main-header button {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.main-header h1 {
   margin: 0;
+  font-family: 'Shadows Into Light Two', cursive;
+  margin-top: 0.7em;
   display: inline-block;
+}
+
+.commendation-header {
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+
+.commendation-header div {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.commendation-header h3 {
+  margin: 1em 0;
+  display: inline-block;
+}
+
+@media screen and (min-width: 768px) {
+  .header {
+    -ms-flex-direction: row;
+        flex-direction: row;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    -ms-flex-align: center;
+        align-items: center;
+  }
+  .header h3 {
+    margin: 0;
+  }
 }
 
 #login-screen {
