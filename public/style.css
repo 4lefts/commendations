@@ -573,10 +573,21 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   }
 }
 
-#login-screen {
+#login-container {
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  background-color: white;
+}
+
+#login-screen {
+  width: 100vmin;
   padding: 15px;
   background-color: white;
   color: #558B2F;
@@ -596,11 +607,12 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 }
 
 #login-screen h3 {
-  font-size: 1.6em;
+  font-size: 1.3em;
 }
 
 #login-screen h1 {
-  font-size: 3em;
+  font-size: 2.1em;
+  font-family: 'Shadows Into Light Two', cursive;
 }
 
 #login-screen button {
@@ -629,6 +641,15 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 #login-screen button:hover, #login-screen button:focus {
   outline: 0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+
+@media screen and (min-width: 768px) {
+  #login-screen h3 {
+    font-size: 1.8em;
+  }
+  #login-screen h1 {
+    font-size: 4em;
+  }
 }
 
 .sub-header {
@@ -690,12 +711,19 @@ form button:hover, form button:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
-#date-filter-container input {
+#controls-form div {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+
+#controls-form div input {
   min-width: 50%;
   margin-right: 15px;
 }
 
-#date-filter-container button {
+#controls-form div button {
   box-sizing: border-box;
   height: 38px;
   max-width: 200px;
@@ -716,9 +744,22 @@ form button:hover, form button:focus {
   transition: all .3s ease;
 }
 
-#date-filter-container button:hover, #date-filter-container button:focus {
+#controls-form div button:hover, #controls-form div button:focus {
   outline: 0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+
+@media screen and (min-width: 768px) {
+  #controls-form div {
+    -ms-flex-direction: row;
+        flex-direction: row;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+    -ms-flex-align: center;
+        align-items: center;
+  }
 }
 
 .commendation {

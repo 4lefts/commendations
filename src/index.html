@@ -30,13 +30,15 @@
       </form>
 
       <form id="controls-form" class="hidden">
-        <h2>All Commendations:</h2>
+        <div>
+          <h2>All Commendations:</h2>
+          <button type="button" id="print-all-button">Print All</button>
+        </div>
         <p>Display commendations since:</p>
-        <div id="date-filter-container">
+        <div>
           <input type="date" id="date-filter">
           <button type="button" id="date-filter-button">Filter</button>
         </div>
-        <button type="button" id="print-all-button">Print All</button>
       </form>
 
       <div id="commendations-container"></div>

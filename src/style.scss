@@ -162,10 +162,18 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   }
 }
 
-#login-screen{
+#login-container{
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+#login-screen{
+  width: 100vmin;
   padding: $gutter;
   background-color: white;
   color: $main_darker;
@@ -178,15 +186,27 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
     margin: 0.125em;
   }
   h3{
-    font-size: 1.6em;
+    font-size: 1.3em;
   }
   h1{
-    font-size: 3em;
+    font-size: 2.1em;
+    font-family: 'Shadows Into Light Two', cursive;
   }
   button{
     @include button-styles($main_darker, white);
     margin-top: $gutter;
     width: 300px;
+  }
+}
+
+@media screen and (min-width: 768px){
+  #login-screen{
+    h3{
+      font-size: 1.8em;
+    }
+    h1{
+      font-size: 4em;
+    }
   }
 }
 
@@ -225,13 +245,24 @@ form{
   }
 }
 
-#date-filter-container{
+#controls-form div{
+  display: flex;
+  flex-direction: column;
   input{
     min-width: 50%;
     margin-right: $gutter;
   }
   button{
     @include button-styles($main_darker, white);
+  }
+}
+
+@media screen and (min-width: 768px){
+  #controls-form div{
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

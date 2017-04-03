@@ -235,7 +235,7 @@ $(document).ready(function () {
         console.log("signed in as " + usr.uid);
         $headerContainer.html(html);
       } else {
-        var _html = "\n        <div id=\"login-screen\">\n            <h3>Weclome to</h3>\n            <h1>Decoy Community Primary School</h1>\n            <h1>Commendations System</h1>\n            " + logoTemplate('#558B2F', 300) + "\n            <button id=\"login-btn\">Log In</button>\n        </div>\n        ";
+        var _html = "\n        <div id=\"login-container\">\n          <div id=\"login-screen\">\n            <h3>Weclome to</h3>\n            <h1>Decoy Primary Commendations</h1>\n            " + logoTemplate('#558B2F', 300) + "\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        ";
         console.log('signed out!');
         $headerContainer.html(_html);
       }

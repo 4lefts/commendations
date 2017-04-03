@@ -239,12 +239,13 @@ $(document).ready(() => {
         $headerContainer.html(html)
       } else {
         const html = `
-        <div id="login-screen">
+        <div id="login-container">
+          <div id="login-screen">
             <h3>Weclome to</h3>
-            <h1>Decoy Community Primary School</h1>
-            <h1>Commendations System</h1>
+            <h1>Decoy Primary Commendations</h1>
             ${logoTemplate('#558B2F', 300)}
             <button id="login-btn">Log In</button>
+          </div>
         </div>
         `
         console.log('signed out!')
