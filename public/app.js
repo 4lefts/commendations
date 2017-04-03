@@ -21,7 +21,8 @@ $(document).ready(function () {
     var userRefs = [];
 
     //set initial filter date as the beginning of current academic year
-    var filterDate = setInitialFilterDate();
+    var initialFilterDate = setInitialFilterDate();
+    var filterDate = initialFilterDate;
     //helper function to get yyyy-mm-dd string of start of current academic year
     function setInitialFilterDate(cb) {
       var tempD = new Date();
@@ -89,17 +90,35 @@ $(document).ready(function () {
       var $commendationToDelete = $(event.target).closest('.commendation');
       var dataId = $commendationToDelete.attr('data-id');
       var uid = $commendationToDelete.attr('data-owner');
-      console.log("deleting: " + dataId);
-      commendationsRef.child(uid).child(dataId).remove().then(function () {
+      var conf = renderDeleteModal(uid, dataId);
+      return false;
+    });
+
+    //handle confirm and cancel buttons for deleting modal
+    $('body').on('click', '#confirm-delete-button', function (event) {
+      var $thisBtn = $(event.target);
+      var dataId = $thisBtn.attr('data-id');
+      var uid = $thisBtn.attr('data-uid');
+      deleteCommendation(uid, dataId);
+      $thisBtn.closest('.modal-container').remove();
+    });
+
+    $('body').on('click', '#cancel-delete-button', function (event) {
+      $(event.target).closest('.modal-container').remove();
+    });
+
+    function deleteCommendation(u, d) {
+      console.log("deleting: " + d);
+      commendationsRef.child(u).child(d).remove().then(function () {
         console.log('removed from fb!');
       }).catch(function (err) {
         console.log(error);
       });
-    });
+    }
 
     $controlsForm.on('click', '#date-filter-button', function (event) {
       var $dateInput = $(event.target).prev();
-      filterDate = $dateInput.val();
+      filterDate = $dateInput.val() || initialFilterDate;
       removeAllCommendations($commendationsContainer);
       userRefs.forEach(function (elem) {
         attachCommendationListeners(elem, filterDate);
@@ -258,6 +277,12 @@ $(document).ready(function () {
       $commendationsContainer.prepend(html);
     }
 
+    //called by clicking on individual delete buttons
+    function renderDeleteModal(u, d) {
+      var html = "\n        <div class=\"modal-container\">\n          <div class=\"modal-body\">\n            <h3>Do you really want to delete this commendation?</h3>\n            <div>\n              <button type=\"button\" id=\"confirm-delete-button\" data-uid=\"" + u + "\" data-id=\"" + d + "\">Yes</button>\n              <button type=\"button\" id=\"cancel-delete-button\">No</button>\n            </div>\n          </div>\n        </div>\n      ";
+      $('body').append(html);
+    }
+
     //called by the print buttons
     function printOneCommendation(event) {
       //cache elements from commendation to print
@@ -316,7 +341,6 @@ $(document).ready(function () {
         $divToRemove.remove();
       });
     }
-    //blah
 
     //called on logout by change in auth state
     function removeAllCommendations($container) {

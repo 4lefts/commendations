@@ -21,7 +21,8 @@ $(document).ready(() => {
     let userRefs = []
 
     //set initial filter date as the beginning of current academic year
-    let filterDate = setInitialFilterDate()
+    const initialFilterDate = setInitialFilterDate()
+    let filterDate = initialFilterDate
     //helper function to get yyyy-mm-dd string of start of current academic year
     function setInitialFilterDate(cb){
       const tempD = new Date()
@@ -85,17 +86,35 @@ $(document).ready(() => {
       const $commendationToDelete = $(event.target).closest('.commendation')
       const dataId = $commendationToDelete.attr('data-id')
       const uid = $commendationToDelete.attr('data-owner')
-      console.log(`deleting: ${dataId}`)
-      commendationsRef.child(uid).child(dataId).remove().then(() => {
+      const conf = renderDeleteModal(uid, dataId)
+      return false
+    })
+
+    //handle confirm and cancel buttons for deleting modal
+    $('body').on('click', '#confirm-delete-button', (event) => {
+      const $thisBtn = $(event.target)
+      const dataId = $thisBtn.attr('data-id')
+      const uid = $thisBtn.attr('data-uid')
+      deleteCommendation(uid, dataId)
+      $thisBtn.closest('.modal-container').remove()
+    })
+
+    $('body').on('click', '#cancel-delete-button', (event) => {
+      $(event.target).closest('.modal-container').remove()
+    })
+
+    function deleteCommendation(u, d){
+      console.log(`deleting: ${d}`)
+      commendationsRef.child(u).child(d).remove().then(() => {
         console.log('removed from fb!')
       }).catch((err) => {
         console.log(error)
       })
-    })
+    }
 
     $controlsForm.on('click', '#date-filter-button', (event) =>{
       const $dateInput = $(event.target).prev()
-      filterDate = $dateInput.val()
+      filterDate = $dateInput.val() || initialFilterDate
       removeAllCommendations($commendationsContainer)
       userRefs.forEach((elem) => {
         attachCommendationListeners(elem, filterDate)
@@ -282,6 +301,22 @@ $(document).ready(() => {
       $commendationsContainer.prepend(html)
     }
 
+    //called by clicking on individual delete buttons
+    function renderDeleteModal(u, d){
+      const html = `
+        <div class="modal-container">
+          <div class="modal-body">
+            <h3>Do you really want to delete this commendation?</h3>
+            <div>
+              <button type="button" id="confirm-delete-button" data-uid="${u}" data-id="${d}">Yes</button>
+              <button type="button" id="cancel-delete-button">No</button>
+            </div>
+          </div>
+        </div>
+      `
+      $('body').append(html)
+    }
+
     //called by the print buttons
     function printOneCommendation(event){
       //cache elements from commendation to print
@@ -378,7 +413,6 @@ $(document).ready(() => {
         $divToRemove.remove()
       })
     }
-    //blah
 
     //called on logout by change in auth state
     function removeAllCommendations($container){

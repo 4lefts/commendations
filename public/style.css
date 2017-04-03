@@ -542,6 +542,11 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   display: inline-block;
 }
 
+.sub-header {
+  background-color: #558B2F;
+  padding: 0 15px;
+}
+
 .commendation-header {
   -ms-flex-direction: column;
       flex-direction: column;
@@ -650,11 +655,6 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   #login-screen h1 {
     font-size: 4em;
   }
-}
-
-.sub-header {
-  background-color: #558B2F;
-  padding: 0 15px;
 }
 
 form {
@@ -808,6 +808,73 @@ form button:hover, form button:focus {
 
 .commendation p:last-child {
   padding-bottom: 15px;
+}
+
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+}
+
+.modal-body {
+  max-width: 500px;
+  width: 90vmin;
+  margin: auto;
+  padding: 15px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.modal-body div {
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  margin: 15px 15px 0 15px;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+}
+
+.modal-body div button {
+  box-sizing: border-box;
+  height: 38px;
+  max-width: 200px;
+  padding: 0 30px;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #558B2F;
+  font-size: 0.8em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  line-height: 38px;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #558B2F;
+  border-radius: 2px;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+  transition: all .3s ease;
+}
+
+.modal-body div button:hover, .modal-body div button:focus {
+  outline: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
 .hidden {
