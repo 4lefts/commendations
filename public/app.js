@@ -23,7 +23,7 @@ $(document).ready(function () {
     //set initial filter date as the beginning of current academic year
     var filterDate = setInitialFilterDate();
     //helper function to get yyyy-mm-dd string of start of current academic year
-    function setInitialFilterDate() {
+    function setInitialFilterDate(cb) {
       var tempD = new Date();
       var tempY = void 0;
       if (tempD.getMonth() < 8) {
@@ -46,6 +46,9 @@ $(document).ready(function () {
 
     //controls for filtering and printing all
     var $controlsForm = $('#controls-form');
+    //p element to display the current filter date
+    var $since = $('#since');
+    renderSinceParagraph(filterDate);
 
     // cache header for logging in and out
     var $headerContainer = $('#header-container-outer');
@@ -103,6 +106,7 @@ $(document).ready(function () {
       });
       console.log("new filter date is: " + filterDate);
       $dateInput.val('');
+      renderSinceParagraph(filterDate);
       return false;
     });
 
@@ -241,6 +245,12 @@ $(document).ready(function () {
       }
     }
 
+    //renders paragraph in controls form to show date filtered since
+    //called by initial setup and by filter button
+    function renderSinceParagraph(d) {
+      $since.text("(Currently displaying commendations made since " + d + ")");
+    }
+
     //called when children are added to db reference
     function renderCommendation(snapshot) {
       var val = snapshot.val();
@@ -301,23 +311,19 @@ $(document).ready(function () {
 
     //called by delete buttons (when children are removed from the db ref)
     function removeOneCommendation(snapshot) {
-      var _this = this;
-
       var $divToRemove = $("div[data-id=\"" + snapshot.key + "\"]");
       $divToRemove.slideUp(300, function () {
-        $(_this).remove();
+        $divToRemove.remove();
       });
     }
+    //blah
 
     //called on logout by change in auth state
     function removeAllCommendations($container) {
-      var _this2 = this;
-
       var $allDivs = $container.find('div');
       $allDivs.each(function (index, value) {
-        $(value).slideUp(300, function () {
-          $(_this2).remove();
-        });
+        $(value).remove();
+        console.log('removing!');
       });
     }
 

@@ -23,7 +23,7 @@ $(document).ready(() => {
     //set initial filter date as the beginning of current academic year
     let filterDate = setInitialFilterDate()
     //helper function to get yyyy-mm-dd string of start of current academic year
-    function setInitialFilterDate(){
+    function setInitialFilterDate(cb){
       const tempD = new Date()
       let tempY
       if(tempD.getMonth() < 8){
@@ -46,6 +46,9 @@ $(document).ready(() => {
 
     //controls for filtering and printing all
     const $controlsForm = $('#controls-form')
+    //p element to display the current filter date
+    const $since = $('#since')
+    renderSinceParagraph(filterDate)
 
     // cache header for logging in and out
     const $headerContainer =  $('#header-container-outer')
@@ -99,6 +102,7 @@ $(document).ready(() => {
       })
       console.log(`new filter date is: ${filterDate}`)
       $dateInput.val('')
+      renderSinceParagraph(filterDate)
       return false
     })
 
@@ -253,6 +257,12 @@ $(document).ready(() => {
       }
     }
 
+    //renders paragraph in controls form to show date filtered since
+    //called by initial setup and by filter button
+    function renderSinceParagraph(d){
+      $since.text(`(Currently displaying commendations made since ${d})`)
+    }
+
     //called when children are added to db reference
     function renderCommendation(snapshot){
       const val = snapshot.val()
@@ -364,14 +374,18 @@ $(document).ready(() => {
     //called by delete buttons (when children are removed from the db ref)
     function removeOneCommendation(snapshot){
       const $divToRemove = $(`div[data-id="${snapshot.key}"]`)
-      $divToRemove.slideUp(300, () => {$(this).remove()})
+      $divToRemove.slideUp(300, () => {
+        $divToRemove.remove()
+      })
     }
+    //blah
 
     //called on logout by change in auth state
     function removeAllCommendations($container){
       const $allDivs = $container.find('div')
-      $allDivs.each((index, value) =>{
-        $(value).slideUp(300, () => {$(this).remove()})
+      $allDivs.each((index, value) => {
+        $(value).remove()
+        console.log('removing!')
       })
     }
 
