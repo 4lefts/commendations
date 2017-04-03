@@ -492,7 +492,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   padding: 15px;
   background-color: #689F38;
   color: white;
-  text-shadow: 0 1px 3px rgba(104, 159, 56, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -588,14 +588,13 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
       align-items: center;
   -ms-flex-pack: center;
       justify-content: center;
-  background-color: white;
+  background: url(images/logInBG.jpg) no-repeat center center fixed;
 }
 
 #login-screen {
   width: 100vmin;
   padding: 15px;
-  background-color: white;
-  color: #558B2F;
+  color: white;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
@@ -607,6 +606,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 }
 
 #login-screen h1, #login-screen h3 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   text-align: center;
   margin: 0.125em;
 }
@@ -625,8 +625,8 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: rgba(255, 255, 255, 0.7);
-  background-color: #558B2F;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: white;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
@@ -635,7 +635,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #558B2F;
+  border: 1px solid white;
   border-radius: 2px;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   transition: all .3s ease;
