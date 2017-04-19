@@ -47,6 +47,9 @@ $(document).ready(function () {
 
     //controls for filtering and printing all
     var $controlsForm = $('#controls-form');
+    //stop date filter control from setting date in future
+    var today = new Date().toISOString().split('T')[0]; //get yyyy-mm-dd
+    $('#date-filter').attr('max', today);
     //p element to display the current filter date
     var $since = $('#since');
     renderSinceParagraph(filterDate);
