@@ -5,5 +5,7 @@ A web app using firebase and jquery to allow teachers to post commendation certi
 * css - jquery animations when adding and removing, spinner while loading?
 * use "get data slowly setInterval()" for testing?
 * proper error handling
-* db rules (including checking types)
-* look into js minification? (not really necessary)
+* set up subdomain (commendations.decoyschool.co.uk)
+* look into firebase hosting
+* add admin uuids
+* filter out non-decoy school staff emails
