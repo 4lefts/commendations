@@ -139,7 +139,8 @@ $(document).ready(function () {
 
     //observe changes to auth state
     firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
+      if (user && checkEmail(user.email)) {
+        //if this person is a decoy member of staff
         var isAdmin = false;
         adminsDbRef.once('value').then(function (snapshot) {
           if (snapshot.val().hasOwnProperty(user.uid)) {
@@ -161,14 +162,30 @@ $(document).ready(function () {
             // removeControlsForm($controlsFormContainer)
           }
         });
+        renderHeader(user);
         $commendationsForm.removeClass('hidden');
-      } else {
+      } else if (user && !checkEmail(user.email)) {
+        // if not a member of staff
+        renderInvalidUserHeader();
+        setTimeout(function () {
+          firebase.auth().signOut().then(function () {}, function (err) {
+            return console.log('error:' + err);
+          });
+        }, 3000);
+        console.log('not a valid user');
+      } else if (!user) {
+        // if not user (if signed out)
         removeAllCommendations($commendationsContainer);
         $controlsForm.addClass('hidden');
         $commendationsForm.addClass('hidden');
+        renderHeader(user);
       }
-      renderHeader(user);
     });
+
+    function checkEmail(address) {
+      return (/^[^0-9]+@decoyschool.co.uk$/.test(address)
+      );
+    }
 
     //sort of middleware - creates an array of uids to attach listners to
     function makeCommendationRefsArray(isAd, uid, cb) {
@@ -256,15 +273,19 @@ $(document).ready(function () {
 
     //called when auth state changes
     function renderHeader(usr) {
-      if (usr) {
+      if (usr && checkEmail(usr.email)) {
         var html = "\n        <div id=\"header-container\">\n          <div class=\"header main-header\">\n            <h1>Decoy School Commendations</h1>\n            <button id=\"logout-btn\">Log Out</button>\n          </div>\n        </div>\n        <div id=\"sub-header-container\">\n          <div class=\"header sub-header\">\n            <p>Logged in as " + usr.displayName + "</p>\n          </div>\n        </div>\n        ";
         console.log("signed in as " + usr.uid);
         $headerContainer.html(html);
       } else {
         var _html = "\n        <div id=\"login-container\">\n          <div id=\"login-screen\">\n            <h3>Weclome to</h3>\n            <h1>Decoy Primary Commendations</h1>\n            " + logoTemplate('#ffffff', '0.5', 300) + "\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        ";
-        console.log('signed out!');
         $headerContainer.html(_html);
       }
+    }
+
+    function renderInvalidUserHeader() {
+      var html = "\n      <div id=\"login-container\">\n        <div id=\"login-screen\">\n          <h3>Sorry, not a valid user</h3>\n          <h3>You must use a Decoy School staff user account</h3>\n          " + logoTemplate('#ffffff', '0.5', 300) + "\n        </div>\n      </div>\n      ";
+      $headerContainer.html(html);
     }
 
     //renders paragraph in controls form to show date filtered since

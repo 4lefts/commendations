@@ -135,7 +135,7 @@ $(document).ready(() => {
 
     //observe changes to auth state
     firebase.auth().onAuthStateChanged((user) => {
-      if(user){
+      if(user && checkEmail(user.email)){ //if this person is a decoy member of staff
         let isAdmin = false
         adminsDbRef.once('value').then((snapshot) => {
           if(snapshot.val().hasOwnProperty(user.uid)){
@@ -156,15 +156,28 @@ $(document).ready(() => {
             $controlsForm.addClass('hidden')
             // removeControlsForm($controlsFormContainer)
           }
-      })
+        })
+        renderHeader(user)
         $commendationsForm.removeClass('hidden')
-      } else {
+      }
+      else if(user && !checkEmail(user.email)) { // if not a member of staff
+        renderInvalidUserHeader()
+        setTimeout(() => {
+          firebase.auth().signOut().then(() => {}, (err) => console.log('error:' + err) )
+        }, 3000)
+        console.log('not a valid user')
+      }
+      else if (!user) { // if not user (if signed out)
         removeAllCommendations($commendationsContainer)
         $controlsForm.addClass('hidden')
         $commendationsForm.addClass('hidden')
+        renderHeader(user)
       }
-      renderHeader(user)
     })
+
+    function checkEmail(address){
+      return /^[^0-9]+@decoyschool.co.uk$/.test(address)
+    }
 
     //sort of middleware - creates an array of uids to attach listners to
     function makeCommendationRefsArray(isAd, uid, cb){
@@ -247,7 +260,7 @@ $(document).ready(() => {
 
     //called when auth state changes
     function renderHeader(usr){
-      if(usr){
+      if(usr && checkEmail(usr.email)){
         const html = `
         <div id="header-container">
           <div class="header main-header">
@@ -274,9 +287,21 @@ $(document).ready(() => {
           </div>
         </div>
         `
-        console.log('signed out!')
         $headerContainer.html(html)
       }
+    }
+
+    function renderInvalidUserHeader(){
+      const html = `
+      <div id="login-container">
+        <div id="login-screen">
+          <h3>Sorry, not a valid user</h3>
+          <h3>You must use a Decoy School staff user account</h3>
+          ${logoTemplate('#ffffff', '0.5', 300)}
+        </div>
+      </div>
+      `
+      $headerContainer.html(html)
     }
 
     //renders paragraph in controls form to show date filtered since
