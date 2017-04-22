@@ -5,10 +5,11 @@
       ".write": "false"
     },
     "commendations": {
-      ".read": "root.child('admins').hasChild(auth.uid)",
+      ".read": "root.child('admins').hasChild(auth.uid) && auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
       "$uid":{
-      	".read": "auth.uid == $uid",
-       	".write": "auth.uid == $uid || root.child('admins').hasChild(auth.uid)",
+        ".indexOn": "date",
+      	".read": "auth.uid == $uid && auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
+       	".write": "(auth.uid == $uid || root.child('admins').hasChild(auth.uid)) && auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
         "$key": {
           ".validate": "newData.hasChildren(['name', 'className', 'date', 'reason', 'displayName', 'uid', 'timestamp'])",
           "name": {
@@ -18,7 +19,7 @@
             ".validate": "newData.isString()"
           },
           "date": {
-            ".validate": "newData.isString() && newData.val().length === 10"
+            ".validate": "newData.isString()"
           },
           "reason": {
             ".validate": "newData.isString()"
