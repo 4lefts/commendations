@@ -353,8 +353,12 @@ $(document).ready(() => {
       //format name and class
       const name = $currentCommendation.find('.commendation-name').html()
       const schoolClass = $currentCommendation.find('.commendation-class').html()
-      //slice brackets off date
-      const date = $currentCommendation.find('.commendation-date').html().slice(1, -1)
+      //slice brackets off date and reverse
+      const date = $currentCommendation.find('.commendation-date').html()
+                                        .slice(1, -1)
+                                        .split('-')
+                                        .reverse()
+                                        .join('/')
       //get reason and author
       const reason = $currentCommendation.find('.commendation-reason').html()
       //slice off the word 'by'
@@ -397,8 +401,12 @@ $(document).ready(() => {
         const $curCommendation = $(value)
         const name = $curCommendation.find('.commendation-name').html()
         const schoolClass = $curCommendation.find('.commendation-class').html()
-        //slice off brackets:
-        const date = $curCommendation.find('.commendation-date').html().slice(1, -1)
+        //slice brackets off date and reverse
+        const date = $currentCommendation.find('.commendation-date').html()
+                                          .slice(1, -1)
+                                          .split('-')
+                                          .reverse()
+                                          .join('/')
         const reason = $curCommendation.find('.commendation-reason').html()
         //slice off word 'by':
         const by = $curCommendation.find('.commendation-by').html().slice(2)

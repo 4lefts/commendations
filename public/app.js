@@ -316,7 +316,7 @@ $(document).ready(function () {
       var name = $currentCommendation.find('.commendation-name').html();
       var schoolClass = $currentCommendation.find('.commendation-class').html();
       //slice brackets off date
-      var date = $currentCommendation.find('.commendation-date').html().slice(1, -1);
+      var date = $currentCommendation.find('.commendation-date').html().slice(1, -1).split('-').reverse().join('/');
       //get reason and author
       var reason = $currentCommendation.find('.commendation-reason').html();
       //slice off the word 'by'
