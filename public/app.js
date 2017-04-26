@@ -156,10 +156,8 @@ $(document).ready(function () {
           });
           if (isAdmin) {
             $controlsForm.removeClass('hidden');
-            // renderControlsForm($controlsFormContainer)
           } else {
             $controlsForm.addClass('hidden');
-            // removeControlsForm($controlsFormContainer)
           }
         });
         renderHeader(user);
@@ -309,28 +307,11 @@ $(document).ready(function () {
 
     //called by the print buttons
     function printOneCommendation(event) {
-      //cache elements from commendation to print
       var $currentCommendation = $(event.target).closest('.commendation');
-      var id = $currentCommendation.attr('data-id');
-      //format name and class
-      var name = $currentCommendation.find('.commendation-name').html();
-      var schoolClass = $currentCommendation.find('.commendation-class').html();
-      //slice brackets off date
-      var date = $currentCommendation.find('.commendation-date').html().slice(1, -1).split('-').reverse().join('/');
-      //get reason and author
-      var reason = $currentCommendation.find('.commendation-reason').html();
-      //slice off the word 'by'
-      var by = $currentCommendation.find('.commendation-by').html().slice(2);
-      var printLogo = logoTemplate('#000000', '1', 100);
-      //render template
-      var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h2>Certificate of Commendation</h2>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <p>in " + schoolClass + "</p>\n        </div>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <div class=\"sig-box\">\n          <img src=\"./images/sig-temp.png\">\n          <p>Mrs G O'Neill, headteacher</p>\n        </div>\n      </div>\n      ";
+      var html = renderPrintCommendation($currentCommendation);
       $commendationsContainer.append(html);
-      //set timeout is a hack to make sure imgs in the printed template are
-      //loaded. can be removed once inline svgs are in place.
-      setTimeout(function () {
-        window.print();
-        $('.printing').remove();
-      }, 250);
+      window.print();
+      $('.printing').remove();
     }
 
     //called by the print buttons
@@ -338,24 +319,31 @@ $(document).ready(function () {
       var html = '';
       $('.commendation').each(function (index, value) {
         var $curCommendation = $(value);
-        var name = $curCommendation.find('.commendation-name').html();
-        var schoolClass = $curCommendation.find('.commendation-class').html();
-        //slice off brackets:
-        var date = $curCommendation.find('.commendation-date').html().slice(1, -1);
-        var reason = $curCommendation.find('.commendation-reason').html();
-        //slice off word 'by':
-        var by = $curCommendation.find('.commendation-by').html().slice(2);
-        var printLogo = logoTemplate('#000000', '1', 100);
-        var templateHtml = "\n        <div class=\"printing\">\n         <div class=\"banner\">\n           <div class=\"logo-left\">" + printLogo + "</div>\n             <h2>Decoy Community Primary School</h2>\n             <h2>Certificate of Commendation</h2>\n           <div class=\"logo-right\">" + printLogo + "</div>\n           <p>This certificate is awarded to</p>\n           <h1>" + name + "</h1>\n           <p>in " + schoolClass + "</p>\n         </div>\n           <p>For " + reason + "</p>\n           <p>Nominated by " + by + ", " + date + "</p>\n           <p>Signed:</p>\n         <div class=\"sig-box\">\n           <img src=\"./images/sig-temp.png\">\n           <p>Mrs G O'Neill, headteacher</p>\n         </div>\n        </div>\n        ";
-        html += templateHtml;
+
+        html += renderPrintCommendation($curCommendation);
       });
       $commendationsContainer.append(html);
-      //set timeout is a hack to make sure imgs in the printed template are
-      //loaded. can be removed once inline svgs are in place.
-      setTimeout(function () {
-        window.print();
-        $('.printing').remove();
-      }, 250);
+      window.print();
+      $('.printing').remove();
+    }
+
+    //renders an html template of the commendation to print
+    function renderPrintCommendation($commendation) {
+      //cache elements from commendation to print
+      var id = $commendation.attr('data-id');
+      //format name and class
+      var name = $commendation.find('.commendation-name').html();
+      var schoolClass = $commendation.find('.commendation-class').html();
+      //slice brackets off date and reverse
+      var date = $commendation.find('.commendation-date').html().slice(1, -1).split('-').reverse().join('/');
+      //get reason and author
+      var reason = $commendation.find('.commendation-reason').html();
+      //slice off the word 'by'
+      var by = $commendation.find('.commendation-by').html().slice(2);
+      var printLogo = logoTemplate('#000000', '1', 100);
+      //render template
+      var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h2>Certificate of Commendation</h2>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <p>in " + schoolClass + "</p>\n        </div>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <div class=\"sig-box\">\n          <img src=\"./images/sig-temp.png\">\n          <p>Mrs G O'Neill, headteacher</p>\n        </div>\n      </div>\n      ";
+      return html;
     }
 
     //called by delete buttons (when children are removed from the db ref)

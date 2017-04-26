@@ -263,7 +263,15 @@ form{
   }
 }
 
+#commendations-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .commendation{
+  box-sizing: border-box;
   @include card(1);
   margin-bottom: $gutter;
   background-color: white;
@@ -281,6 +289,12 @@ form{
     &:last-child{
       padding-bottom: $gutter;
     }
+  }
+}
+
+@media screen and (min-width: 760px) {
+  .commendation{
+    width: 49%;
   }
 }
 

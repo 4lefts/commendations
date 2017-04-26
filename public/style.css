@@ -762,7 +762,19 @@ form button:hover, form button:focus {
   }
 }
 
+#commendations-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+}
+
 .commendation {
+  box-sizing: border-box;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   margin-bottom: 15px;
   background-color: white;
@@ -808,6 +820,12 @@ form button:hover, form button:focus {
 
 .commendation p:last-child {
   padding-bottom: 15px;
+}
+
+@media screen and (min-width: 760px) {
+  .commendation {
+    width: 49%;
+  }
 }
 
 .modal-container {

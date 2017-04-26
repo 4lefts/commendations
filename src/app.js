@@ -151,10 +151,8 @@ $(document).ready(() => {
           })
           if(isAdmin){
             $controlsForm.removeClass('hidden')
-            // renderControlsForm($controlsFormContainer)
           } else {
             $controlsForm.addClass('hidden')
-            // removeControlsForm($controlsFormContainer)
           }
         })
         renderHeader(user)
@@ -347,22 +345,43 @@ $(document).ready(() => {
 
     //called by the print buttons
     function printOneCommendation(event){
-      //cache elements from commendation to print
       const $currentCommendation = $(event.target).closest('.commendation')
-      const id = $currentCommendation.attr('data-id')
+      const html = renderPrintCommendation($currentCommendation)
+      $commendationsContainer.append(html)
+      window.print()
+      $('.printing').remove()
+    }
+
+    //called by the print buttons
+    function printAllCommendations(event){
+      let html = ''
+      $('.commendation').each((index, value) => {
+        const $curCommendation = $(value)
+
+        html += renderPrintCommendation($curCommendation)
+      })
+      $commendationsContainer.append(html)
+      window.print()
+      $('.printing').remove()
+    }
+
+    //renders an html template of the commendation to print
+    function renderPrintCommendation($commendation){
+      //cache elements from commendation to print
+      const id = $commendation.attr('data-id')
       //format name and class
-      const name = $currentCommendation.find('.commendation-name').html()
-      const schoolClass = $currentCommendation.find('.commendation-class').html()
+      const name = $commendation.find('.commendation-name').html()
+      const schoolClass = $commendation.find('.commendation-class').html()
       //slice brackets off date and reverse
-      const date = $currentCommendation.find('.commendation-date').html()
+      const date = $commendation.find('.commendation-date').html()
                                         .slice(1, -1)
                                         .split('-')
                                         .reverse()
                                         .join('/')
       //get reason and author
-      const reason = $currentCommendation.find('.commendation-reason').html()
+      const reason = $commendation.find('.commendation-reason').html()
       //slice off the word 'by'
-      const by = $currentCommendation.find('.commendation-by').html().slice(2)
+      const by = $commendation.find('.commendation-by').html().slice(2)
       const printLogo = logoTemplate('#000000', '1', 100)
       //render template
       const html = `
@@ -385,61 +404,7 @@ $(document).ready(() => {
         </div>
       </div>
       `
-      $commendationsContainer.append(html)
-      //set timeout is a hack to make sure imgs in the printed template are
-      //loaded. can be removed once inline svgs are in place.
-      setTimeout(() => {
-        window.print()
-        $('.printing').remove()
-      }, 250)
-    }
-
-    //called by the print buttons
-    function printAllCommendations(event){
-      let html = ''
-      $('.commendation').each((index, value) => {
-        const $curCommendation = $(value)
-        const name = $curCommendation.find('.commendation-name').html()
-        const schoolClass = $curCommendation.find('.commendation-class').html()
-        //slice brackets off date and reverse
-        const date = $currentCommendation.find('.commendation-date').html()
-                                          .slice(1, -1)
-                                          .split('-')
-                                          .reverse()
-                                          .join('/')
-        const reason = $curCommendation.find('.commendation-reason').html()
-        //slice off word 'by':
-        const by = $curCommendation.find('.commendation-by').html().slice(2)
-        const printLogo = logoTemplate('#000000', '1', 100)
-        const templateHtml = `
-        <div class="printing">
-         <div class="banner">
-           <div class="logo-left">${printLogo}</div>
-             <h2>Decoy Community Primary School</h2>
-             <h2>Certificate of Commendation</h2>
-           <div class="logo-right">${printLogo}</div>
-           <p>This certificate is awarded to</p>
-           <h1>${name}</h1>
-           <p>in ${schoolClass}</p>
-         </div>
-           <p>For ${reason}</p>
-           <p>Nominated by ${by}, ${date}</p>
-           <p>Signed:</p>
-         <div class="sig-box">
-           <img src="./images/sig-temp.png">
-           <p>Mrs G O'Neill, headteacher</p>
-         </div>
-        </div>
-        `
-        html += templateHtml
-      })
-      $commendationsContainer.append(html)
-      //set timeout is a hack to make sure imgs in the printed template are
-      //loaded. can be removed once inline svgs are in place.
-      setTimeout(() => {
-        window.print()
-        $('.printing').remove()
-      }, 250)
+      return html
     }
 
     //called by delete buttons (when children are removed from the db ref)
