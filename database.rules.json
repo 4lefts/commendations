@@ -1,7 +1,7 @@
 {
   "rules": {
     "admins": {
-      ".read": "true",
+      ".read": "auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
       ".write": "false"
     },
     "commendations": {
