@@ -4,6 +4,15 @@
   },
   "hosting": {
     "public": "public",
+    "ignore": [
+      "**/src/**",
+      "**/.*",
+      "**/node_modules/**",
+      "firebase.json",
+      "gulpfile.js",
+      "package.json",
+      "README.md"
+    ]
     "rewrites": [
       {
         "source": "**",
