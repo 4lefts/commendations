@@ -347,7 +347,18 @@ form{
       color: black;
   }
 
+/*
+  necessary in order to get page-break-inside: avoid to work
+*/
+  #commendations-container{
+    display: block;
+    position: relative;
+  }
+
   .printing{
+    position: relative;
+    page-break-after: auto;
+    page-break-before: auto;
     page-break-inside: avoid;
     display: block;
     border: 1.5px solid black;

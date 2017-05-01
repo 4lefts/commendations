@@ -572,7 +572,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
       align-items: center;
   -ms-flex-pack: center;
       justify-content: center;
-  background: url(images/logInBG.jpg) no-repeat center center fixed;
+  background: url(images/logInBG.JPG) no-repeat center center fixed;
 }
 
 #login-screen {
@@ -892,7 +892,17 @@ form button:hover, form button:focus {
     background-color: white;
     color: black;
   }
+  /*
+  necessary in order to get page-break-inside: avoid to work
+*/
+  #commendations-container {
+    display: block;
+    position: relative;
+  }
   .printing {
+    position: relative;
+    page-break-after: auto;
+    page-break-before: auto;
     page-break-inside: avoid;
     display: block;
     border: 1.5px solid black;
