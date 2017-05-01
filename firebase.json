@@ -12,7 +12,7 @@
       "gulpfile.js",
       "package.json",
       "README.md"
-    ]
+    ],
     "rewrites": [
       {
         "source": "**",
