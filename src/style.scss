@@ -150,23 +150,23 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
     align-self: flex-end;
   }
   h3{
-    margin: 1em 0;
+    margin: 0.3em 0 0.7em 0;
     display: inline-block;
   }
 }
 
 // media queries for different types of headers
-@media screen and (min-width: 768px) {
-  .header{
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    h3{
-      margin: 0;
-    }
-  }
-}
+// @media screen and (min-width: 768px) {
+//   .header{
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//     align-items: center;
+//     h3{
+//       margin: 0;
+//     }
+//   }
+// }
 
 #login-container{
   box-sizing: border-box;
@@ -175,7 +175,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url(images/logInBG.jpg) no-repeat center center fixed;
+  background: url(images/logInBG.JPG) no-repeat center center fixed;
 }
 
 #login-screen{
@@ -347,7 +347,18 @@ form{
       color: black;
   }
 
+/*
+  necessary in order to get page-break-inside: avoid to work
+*/
+  #commendations-container{
+    display: block;
+    position: relative;
+  }
+
   .printing{
+    position: relative;
+    page-break-after: auto;
+    page-break-before: auto;
     page-break-inside: avoid;
     display: block;
     border: 1.5px solid black;
@@ -385,12 +396,16 @@ form{
     }
 
     .sig-box{
+      p{
+        margin: 0;
+        padding: 0;
+      }
       width: 100%;
       height:  auto;
       display: flex;
       flex-direction: row;
       align-items: flex-end;
-      img{
+      .sig-image{
         margin-right: 1cm;
         max-width: 100%;
         height: auto;

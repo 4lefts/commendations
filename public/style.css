@@ -558,24 +558,8 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 }
 
 .commendation-header h3 {
-  margin: 1em 0;
+  margin: 0.3em 0 0.7em 0;
   display: inline-block;
-}
-
-@media screen and (min-width: 768px) {
-  .header {
-    -ms-flex-direction: row;
-        flex-direction: row;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    -ms-flex-pack: justify;
-        justify-content: space-between;
-    -ms-flex-align: center;
-        align-items: center;
-  }
-  .header h3 {
-    margin: 0;
-  }
 }
 
 #login-container {
@@ -588,7 +572,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
       align-items: center;
   -ms-flex-pack: center;
       justify-content: center;
-  background: url(images/logInBG.jpg) no-repeat center center fixed;
+  background: url(images/logInBG.JPG) no-repeat center center fixed;
 }
 
 #login-screen {
@@ -908,7 +892,17 @@ form button:hover, form button:focus {
     background-color: white;
     color: black;
   }
+  /*
+  necessary in order to get page-break-inside: avoid to work
+*/
+  #commendations-container {
+    display: block;
+    position: relative;
+  }
   .printing {
+    position: relative;
+    page-break-after: auto;
+    page-break-before: auto;
     page-break-inside: avoid;
     display: block;
     border: 1.5px solid black;
@@ -951,7 +945,11 @@ form button:hover, form button:focus {
     -ms-flex-align: end;
         align-items: flex-end;
   }
-  .printing .sig-box img {
+  .printing .sig-box p {
+    margin: 0;
+    padding: 0;
+  }
+  .printing .sig-box .sig-image {
     margin-right: 1cm;
     max-width: 100%;
     height: auto;
