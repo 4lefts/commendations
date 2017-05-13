@@ -652,7 +652,8 @@ form {
   margin: 15px 0;
 }
 
-form input, form textarea {
+form input, form textarea, form select {
+  box-sizing: border-box;
   margin: 15px 0;
   padding: 10px;
   border: none;
@@ -660,13 +661,18 @@ form input, form textarea {
   outline: none;
 }
 
-form input:focus, form textarea:focus {
+form input:focus, form textarea:focus, form select:focus {
   border-color: rgba(0, 0, 0, 0.7);
 }
 
 form textarea {
-  height: 200px;
+  height: 100px;
   border: 1px solid rgba(77, 77, 77, 0.7);
+}
+
+form select {
+  border-bottom: 1px solid rgba(77, 77, 77, 0.7);
+  border-right: 1px solid rgba(77, 77, 77, 0.7);
 }
 
 form button {
@@ -695,6 +701,30 @@ form button:hover, form button:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
+#commendations-form div {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+}
+
+#commendations-form div textarea, #commendations-form div input, #commendations-form div select {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  #commendations-form div {
+    -ms-flex-direction: row;
+        flex-direction: row;
+  }
+  #commendations-form div input {
+    margin-right: 15px;
+  }
+  #commendations-form div input, #commendations-form div select {
+    width: 50%;
+  }
+}
+
 #controls-form div {
   display: -ms-flexbox;
   display: flex;
@@ -705,6 +735,8 @@ form button:hover, form button:focus {
 #controls-form div input {
   min-width: 50%;
   margin-right: 15px;
+  border-bottom: 1px solid rgba(77, 77, 77, 0.7);
+  border-right: 1px solid rgba(77, 77, 77, 0.7);
 }
 
 #controls-form div button {

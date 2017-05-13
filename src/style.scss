@@ -223,7 +223,8 @@ form{
   display: flex;
   flex-direction: column;
   margin: $gutter 0;
-  input, textarea{
+  input, textarea, select{
+    box-sizing: border-box;
     margin: $gutter 0;
     padding: 10px;
     border: none;
@@ -234,11 +235,35 @@ form{
     }
   }
   textarea{
-    height: 200px;
+    height: 100px;
     border: 1px solid lighten($text-colour, 30%);
+  }
+  select{
+    border-bottom: 1px solid lighten($text-colour, 30%);
+    border-right: 1px solid lighten($text-colour, 30%);
   }
   button{
     @include button-styles($main_darker, white);
+  }
+}
+
+#commendations-form div{
+  display: flex;
+  flex-direction: column;
+  textarea, input, select{
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px){
+  #commendations-form div{
+    flex-direction: row;
+    input{
+      margin-right: $gutter;
+    }
+    input, select{
+      width: 50%;
+    }
   }
 }
 
@@ -248,6 +273,8 @@ form{
   input{
     min-width: 50%;
     margin-right: $gutter;
+    border-bottom: 1px solid lighten($text-colour, 30%);
+    border-right: 1px solid lighten($text-colour, 30%);
   }
   button{
     @include button-styles($main_darker, white);

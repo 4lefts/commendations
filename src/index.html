@@ -28,8 +28,26 @@
     <div class="container">
       <form id="commendations-form" class="hidden">
         <h2>Make a Commendation:</h2>
-        <input type="text" id="name" placeholder="Name">
-        <input type="text" id="class-name" placeholder="Class">
+        <div>
+          <input type="text" id="name" placeholder="Name">
+          <select id="class-name" placeholder="Class">
+            <option value="nothing" disabled selected>Class</option>
+            <option value="Butterflies">Butterflies</option>
+            <option value="Ladybirds">Ladybirds</option>
+            <option value="Woodpeckers">Woodpeckers</option>
+            <option value="Wrens">Wrens</option>
+            <option value="Chaffinches">Chaffinches</option>
+            <option value="Partridges">Partridges</option>
+            <option value="Puffins">Puffins</option>
+            <option value="Swans">Swans</option>
+            <option value="Kingfishers">Kingfishers</option>
+            <option value="Mallards">Mallards</option>
+            <option value="Kestrels">Kestrels</option>
+            <option value="Owls">Owls</option>
+            <option value="Eagles">Eagles</option>
+            <option value="Falcons">Falcons</option>
+          </select>
+        </div>
         <textarea id="reason" placeholder="Reason"></textarea>
         <button type="button" id="send-button">Submit</button>
       </form>
@@ -41,7 +59,7 @@
         </div>
         <p>Display commendations since:</p>
         <div>
-          <input type="text" id="date-filter">
+          <input type="text" id="date-filter" placeholder="Date">
           <button type="button" id="date-filter-button">Filter</button>
         </div>
         <p id="since"></p>
