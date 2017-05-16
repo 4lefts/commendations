@@ -79,10 +79,19 @@ $(document).ready(function () {
 
   //add form listener to send commendation
   $sendButton.on('click', function (event) {
-    var usr = firebase.auth().currentUser;
-    submitCommendation($name.val(), $className.val(), $reason.val(), usr);
-    //reset the form
-    $(event.target).closest('form').find('input:text, textarea').val('');
+    var $msg = $commendationsForm.find('p.message');
+    if ($commendationsForm[0].checkValidity()) {
+      console.log('valid form!');
+      var usr = firebase.auth().currentUser;
+      submitCommendation($name.val(), $className.val(), $reason.val(), usr);
+      //reset the form
+      $(event.target).closest('form').find('input:text, textarea').val('');
+      $(event.target).closest('form').find('select').val('nothing');
+      if (!$msg.hasClass('hidden')) $msg.addClass('hidden');
+    } else {
+      console.log('invalid form!');
+      if ($msg.hasClass('hidden')) $msg.removeClass('hidden');
+    }
     return false;
   });
 
@@ -352,7 +361,7 @@ $(document).ready(function () {
   //called by delete buttons (when children are removed from the db ref)
   function removeOneCommendation(snapshot) {
     var $divToRemove = $("div[data-id=\"" + snapshot.key + "\"]");
-    $divToRemove.slideUp(300, function () {
+    $divToRemove.fadeOut(300, function () {
       $divToRemove.remove();
     });
   }

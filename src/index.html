@@ -29,8 +29,8 @@
       <form id="commendations-form" class="hidden">
         <h2>Make a Commendation:</h2>
         <div>
-          <input type="text" id="name" placeholder="Name">
-          <select id="class-name" placeholder="Class">
+          <input type="text" id="name" placeholder="Name" required />
+          <select id="class-name" placeholder="Class" required>
             <option value="nothing" disabled selected>Class</option>
             <option value="Butterflies">Butterflies</option>
             <option value="Ladybirds">Ladybirds</option>
@@ -48,7 +48,8 @@
             <option value="Falcons">Falcons</option>
           </select>
         </div>
-        <textarea id="reason" placeholder="Reason"></textarea>
+        <textarea id="reason" placeholder="Reason" required></textarea>
+        <p class="message hidden">Please complete all fields.</p>
         <button type="button" id="send-button">Submit</button>
       </form>
 
