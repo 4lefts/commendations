@@ -245,6 +245,9 @@ form{
   button{
     @include button-styles($main_darker, white);
   }
+}
+
+#commendations-form {
   p{
     margin-top: 0.1em;
     &.message{
@@ -252,13 +255,12 @@ form{
       font-style: italic;
     }
   }
-}
-
-#commendations-form div{
-  display: flex;
-  flex-direction: column;
-  textarea, input, select{
-    width: 100%;
+  div{
+    display: flex;
+    flex-direction: column;
+    textarea, input, select{
+      width: 100%;
+    }
   }
 }
 
