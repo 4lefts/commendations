@@ -245,9 +245,12 @@ form{
   button{
     @include button-styles($main_darker, white);
   }
-  p.message{
-    color: red;
-    font-style: italic;
+  p{
+    margin-top: 0.1em;
+    &.message{
+      color: red;
+      font-style: italic;
+    }
   }
 }
 

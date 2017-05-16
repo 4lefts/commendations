@@ -70,7 +70,6 @@ $(document).ready(() => {
 
     //and logout button
     $headerContainer.on('click', '#logout-btn', () => {
-      console.log('logging out!')
       firebase.auth().signOut().then(() => {}, (err) => console.log('error:' + err) )
     })
 
@@ -78,7 +77,6 @@ $(document).ready(() => {
     $sendButton.on('click', (event) => {
       const $msg = $commendationsForm.find('p.message')
       if($commendationsForm[0].checkValidity()){
-        console.log('valid form!')
         const usr = firebase.auth().currentUser
         submitCommendation($name.val(), $className.val(), $reason.val(), usr)
         //reset the form
@@ -86,7 +84,6 @@ $(document).ready(() => {
         $(event.target).closest('form').find('select').val('nothing')
         if(!$msg.hasClass('hidden')) $msg.addClass('hidden')
       } else {
-        console.log('invalid form!')
         if($msg.hasClass('hidden')) $msg.removeClass('hidden')
       }
       return false
@@ -120,9 +117,7 @@ $(document).ready(() => {
     })
 
     function deleteCommendation(u, d){
-      console.log(`deleting: ${d}`)
       commendationsRef.child(u).child(d).remove().then(() => {
-        console.log('removed from backend!')
       }).catch((err) => {
         console.log(error)
       })
@@ -134,7 +129,6 @@ $(document).ready(() => {
       userRefs.forEach((elem) => {
         attachCommendationListeners(elem, filterDate)
       })
-      console.log(`new filter date is: ${filterDate}`)
       $dateInput.val('')
       renderSinceParagraph(filterDate)
       return false
@@ -155,7 +149,6 @@ $(document).ready(() => {
           } else {
             isAdmin = false
           }
-          console.log(`are you an admin?: ${isAdmin}`)
           makeCommendationRefsArray(isAdmin, user.uid, () => {
             userRefs.forEach((elem) => {
               attachCommendationListeners(elem, filterDate)
@@ -202,13 +195,11 @@ $(document).ready(() => {
           for(let key in snapshot.val()){
             refsArray.push(key)
           }
-          console.log(refsArray)
           userRefs = refsArray
           cb()
         })
       } else { //or listen for specific user
         refsArray.push(uid)
-        console.log(refsArray)
         userRefs = refsArray
         cb()
       }
@@ -408,7 +399,7 @@ $(document).ready(() => {
           <h1>${name}</h1>
           <p>in ${schoolClass}</p>
         </div>
-        <p>For ${reason}</p>
+        <p>${reason}</p>
         <p>Nominated by ${by}, ${date}</p>
         <p>Signed:</p>
         <div class="sig-box">
@@ -433,7 +424,6 @@ $(document).ready(() => {
       const $allDivs = $container.find('div')
       $allDivs.each((index, value) => {
         $(value).remove()
-        console.log('removing!')
       })
     }
 

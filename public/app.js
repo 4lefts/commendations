@@ -71,7 +71,6 @@ $(document).ready(function () {
 
   //and logout button
   $headerContainer.on('click', '#logout-btn', function () {
-    console.log('logging out!');
     firebase.auth().signOut().then(function () {}, function (err) {
       return console.log('error:' + err);
     });
@@ -81,7 +80,6 @@ $(document).ready(function () {
   $sendButton.on('click', function (event) {
     var $msg = $commendationsForm.find('p.message');
     if ($commendationsForm[0].checkValidity()) {
-      console.log('valid form!');
       var usr = firebase.auth().currentUser;
       submitCommendation($name.val(), $className.val(), $reason.val(), usr);
       //reset the form
@@ -89,7 +87,6 @@ $(document).ready(function () {
       $(event.target).closest('form').find('select').val('nothing');
       if (!$msg.hasClass('hidden')) $msg.addClass('hidden');
     } else {
-      console.log('invalid form!');
       if ($msg.hasClass('hidden')) $msg.removeClass('hidden');
     }
     return false;
@@ -123,10 +120,7 @@ $(document).ready(function () {
   });
 
   function deleteCommendation(u, d) {
-    console.log("deleting: " + d);
-    commendationsRef.child(u).child(d).remove().then(function () {
-      console.log('removed from backend!');
-    }).catch(function (err) {
+    commendationsRef.child(u).child(d).remove().then(function () {}).catch(function (err) {
       console.log(error);
     });
   }
@@ -137,7 +131,6 @@ $(document).ready(function () {
     userRefs.forEach(function (elem) {
       attachCommendationListeners(elem, filterDate);
     });
-    console.log("new filter date is: " + filterDate);
     $dateInput.val('');
     renderSinceParagraph(filterDate);
     return false;
@@ -159,7 +152,6 @@ $(document).ready(function () {
         } else {
           isAdmin = false;
         }
-        console.log("are you an admin?: " + isAdmin);
         makeCommendationRefsArray(isAdmin, user.uid, function () {
           userRefs.forEach(function (elem) {
             attachCommendationListeners(elem, filterDate);
@@ -209,14 +201,12 @@ $(document).ready(function () {
         for (var key in snapshot.val()) {
           refsArray.push(key);
         }
-        console.log(refsArray);
         userRefs = refsArray;
         cb();
       });
     } else {
       //or listen for specific user
       refsArray.push(uid);
-      console.log(refsArray);
       userRefs = refsArray;
       cb();
     }
@@ -354,7 +344,7 @@ $(document).ready(function () {
     var printLogo = logoTemplate('#000000', '1', 100);
     var printSig = sigTemplate(120);
     //render template
-    var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h2>Certificate of Commendation</h2>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <p>in " + schoolClass + "</p>\n        </div>\n        <p>For " + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <div class=\"sig-box\">\n          <div class=\"sig-image\">" + printSig + "</div>\n          <p>Mrs G O'Neill, headteacher</p>\n        </div>\n      </div>\n      ";
+    var html = "\n      <div class=\"printing\" id=\"printing-" + id + "\">\n        <div class=\"banner\">\n          <div class=\"logo-left\">" + printLogo + "</div>\n          <h2>Decoy Community Primary School</h2>\n          <h2>Certificate of Commendation</h2>\n          <div class=\"logo-right\">" + printLogo + "</div>\n          <p>This certificate is awarded to</p>\n          <h1>" + name + "</h1>\n          <p>in " + schoolClass + "</p>\n        </div>\n        <p>" + reason + "</p>\n        <p>Nominated by " + by + ", " + date + "</p>\n        <p>Signed:</p>\n        <div class=\"sig-box\">\n          <div class=\"sig-image\">" + printSig + "</div>\n          <p>Mrs G O'Neill, headteacher</p>\n        </div>\n      </div>\n      ";
     return html;
   }
 
@@ -371,7 +361,6 @@ $(document).ready(function () {
     var $allDivs = $container.find('div');
     $allDivs.each(function (index, value) {
       $(value).remove();
-      console.log('removing!');
     });
   }
 

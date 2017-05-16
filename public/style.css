@@ -701,6 +701,10 @@ form button:hover, form button:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
+form p {
+  margin-top: 0.1em;
+}
+
 form p.message {
   color: red;
   font-style: italic;
