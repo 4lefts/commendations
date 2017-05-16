@@ -5,16 +5,21 @@
     <html lang="en-GB">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- css and webfonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Shadows+Into+Light+Two" rel="stylesheet">
+    <!-- jquery ui css -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./style.css">
     <!-- scripts -->
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <!-- jquery ui -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- App -->
     <script type="text/javascript" src="./app.js"></script>
     <title>Decoy Commendations</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Shadows+Into+Light+Two" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
   </head>
 
   <body>
@@ -23,8 +28,26 @@
     <div class="container">
       <form id="commendations-form" class="hidden">
         <h2>Make a Commendation:</h2>
-        <input type="text" id="name" placeholder="Name">
-        <input type="text" id="class-name" placeholder="Class">
+        <div>
+          <input type="text" id="name" placeholder="Name">
+          <select id="class-name" placeholder="Class">
+            <option value="nothing" disabled selected>Class</option>
+            <option value="Butterflies">Butterflies</option>
+            <option value="Ladybirds">Ladybirds</option>
+            <option value="Woodpeckers">Woodpeckers</option>
+            <option value="Wrens">Wrens</option>
+            <option value="Chaffinches">Chaffinches</option>
+            <option value="Partridges">Partridges</option>
+            <option value="Puffins">Puffins</option>
+            <option value="Swans">Swans</option>
+            <option value="Kingfishers">Kingfishers</option>
+            <option value="Mallards">Mallards</option>
+            <option value="Kestrels">Kestrels</option>
+            <option value="Owls">Owls</option>
+            <option value="Eagles">Eagles</option>
+            <option value="Falcons">Falcons</option>
+          </select>
+        </div>
         <textarea id="reason" placeholder="Reason"></textarea>
         <button type="button" id="send-button">Submit</button>
       </form>
@@ -36,7 +59,7 @@
         </div>
         <p>Display commendations since:</p>
         <div>
-          <input type="date" id="date-filter">
+          <input type="text" id="date-filter" placeholder="Date">
           <button type="button" id="date-filter-button">Filter</button>
         </div>
         <p id="since"></p>
