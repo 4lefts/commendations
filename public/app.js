@@ -277,7 +277,7 @@ $(document).ready(function () {
       console.log("signed in as " + usr.uid);
       $headerContainer.html(html);
     } else {
-      var _html = "\n        <div id=\"login-container\">\n          <div id=\"login-screen\">\n            <h3>Weclome to</h3>\n            <h1>Decoy Primary Commendations</h1>\n            " + logoTemplate('#ffffff', '0.5', 300) + "\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        ";
+      var _html = "\n        <div id=\"login-container\">\n          <div id=\"login-screen\">\n            <h3>Welcome to</h3>\n            <h1>Decoy Primary Commendations</h1>\n            " + logoTemplate('#ffffff', '0.5', 300) + "\n            <button id=\"login-btn\">Log In</button>\n          </div>\n        </div>\n        ";
       $headerContainer.html(_html);
     }
   }

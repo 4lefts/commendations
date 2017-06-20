@@ -281,7 +281,7 @@ $(document).ready(() => {
         const html = `
         <div id="login-container">
           <div id="login-screen">
-            <h3>Weclome to</h3>
+            <h3>Welcome to</h3>
             <h1>Decoy Primary Commendations</h1>
             ${logoTemplate('#ffffff', '0.5', 300)}
             <button id="login-btn">Log In</button>
