@@ -24,6 +24,7 @@ $(document).ready(() => {
     const initialFilterDate = setInitialFilterDate()
     let filterDate = initialFilterDate
     //helper function to get yyyy-mm-dd string of start of current academic year
+    //i.e. sept first
     function setInitialFilterDate(cb){
       const tempD = new Date()
       let tempY
@@ -34,6 +35,9 @@ $(document).ready(() => {
       }
       return `${tempY}-09-01`
     }
+    //vars to decide what key stages to display
+    let showKS1 = true
+    let showKS2 = true
 
     //CACHE DOM//
     const $commendationsContainer = $('#commendations-container')
@@ -47,13 +51,14 @@ $(document).ready(() => {
 
     //controls for filtering and printing all
     const $controlsForm = $('#controls-form')
+    const $ksFilters = $('#ks-filters')
+
     //jquery ui date picker
     const $dateInput = $('#date-filter').datepicker({
       dateFormat: 'yy-mm-dd',
       minDate: new Date(initialFilterDate),
       maxDate: 0, //stop date filter control from setting date in future
     })
-    // $('#date-filter').attr('max', today)
     //p element to display the current filter date
     const $since = $('#since')
     renderSinceParagraph(filterDate)
@@ -137,6 +142,14 @@ $(document).ready(() => {
     $controlsForm.on('click', '#print-all-button', (event) => {
       printAllCommendations()
       return false
+    })
+
+    $ksFilters.on('click', 'input[type="checkbox"]', (event) => {
+      if(event.target.value === 'ks1'){
+        showKS1 = event.target.checked
+      } else if (event.target.value === 'ks2'){
+        showKS2 = event.target.checked
+      }
     })
 
     //observe changes to auth state

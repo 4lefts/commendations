@@ -774,6 +774,60 @@ form button:hover, form button:focus {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
+#controls-form #ks-filters {
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-pack: start;
+      justify-content: flex-start;
+}
+
+#controls-form #ks-filters .ks-filter {
+  margin-right: 15px;
+  position: relative;
+  width: 70px;
+  height: 40px;
+}
+
+#controls-form #ks-filters .ks-filter input[type=checkbox] {
+  visibility: hidden;
+}
+
+#controls-form #ks-filters .ks-filter label {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 10px;
+  right: 0;
+  border-radius: 2px;
+  border: 1.3px solid rgba(0, 0, 0, 0.5);
+  background-color: white;
+  cursor: pointer;
+}
+
+#controls-form #ks-filters .ks-filter label:after {
+  opacity: 0;
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 6px;
+  background-color: transparent;
+  top: 7px;
+  left: 6px;
+  border: 3px solid white;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}
+
+#controls-form #ks-filters .ks-filter input[type=checkbox]:checked + label {
+  background-color: #689F38;
+  border-color: #689F38;
+}
+
+#controls-form #ks-filters .ks-filter input[type=checkbox]:checked + label:after {
+  opacity: 1;
+}
+
 @media screen and (min-width: 768px) {
   #controls-form div {
     -ms-flex-direction: row;
@@ -784,6 +838,10 @@ form button:hover, form button:focus {
         justify-content: space-between;
     -ms-flex-align: center;
         align-items: center;
+  }
+  .ks-filter {
+    -ms-flex-pack: start;
+        justify-content: flex-start;
   }
 }
 

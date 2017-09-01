@@ -143,7 +143,6 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   padding: 0 $gutter;
 }
 
-
 .commendation-header{
   flex-direction: column;
   div{
@@ -154,19 +153,6 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
     display: inline-block;
   }
 }
-
-// media queries for different types of headers
-// @media screen and (min-width: 768px) {
-//   .header{
-//     flex-direction: row;
-//     flex-wrap: wrap;
-//     justify-content: space-between;
-//     align-items: center;
-//     h3{
-//       margin: 0;
-//     }
-//   }
-// }
 
 #login-container{
   box-sizing: border-box;
@@ -276,17 +262,65 @@ form{
   }
 }
 
-#controls-form div{
-  display: flex;
-  flex-direction: column;
-  input{
-    min-width: 50%;
-    margin-right: $gutter;
-    border-bottom: 1px solid lighten($text-colour, 30%);
-    border-right: 1px solid lighten($text-colour, 30%);
+#controls-form {
+  div{
+    display: flex;
+    flex-direction: column;
+    input{
+      min-width: 50%;
+      margin-right: $gutter;
+      border-bottom: 1px solid lighten($text-colour, 30%);
+      border-right: 1px solid lighten($text-colour, 30%);
+    }
+
+    button{
+      @include button-styles($main_darker, white);
+    }
   }
-  button{
-    @include button-styles($main_darker, white);
+  #ks-filters{
+    flex-direction: row;
+    justify-content: flex-start;
+    .ks-filter{
+      margin-right: $gutter;
+      position: relative;
+      width: 70px;
+      height: 40px;
+      input[type=checkbox]{
+        visibility: hidden;
+      }
+      label{
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        top: 10px;
+        right: 0;
+        border-radius: 2px;
+        border: 1.3px solid rgba(0, 0, 0, 0.5);
+        background-color: white;
+        cursor: pointer;
+        &:after{
+          opacity: 0;
+          content: '';
+          position: absolute;
+          width: 12px;
+          height: 6px;
+          background-color: transparent;
+          top: 7px;
+          left: 6px;
+          border: 3px solid white;
+          border-top: none;
+          border-right: none;
+          transform: rotate(-45deg);
+        }
+      }
+      input[type=checkbox]:checked + label{
+        background-color: $main_colour;
+        border-color: $main_colour;
+        &:after{
+          opacity: 1;
+        }
+      }
+    }
   }
 }
 
@@ -296,6 +330,9 @@ form{
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+  }
+  .ks-filter{
+    justify-content: flex-start;
   }
 }
 

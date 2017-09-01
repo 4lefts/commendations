@@ -24,6 +24,7 @@ $(document).ready(function () {
   var initialFilterDate = setInitialFilterDate();
   var filterDate = initialFilterDate;
   //helper function to get yyyy-mm-dd string of start of current academic year
+  //i.e. sept first
   function setInitialFilterDate(cb) {
     var tempD = new Date();
     var tempY = void 0;
@@ -34,6 +35,9 @@ $(document).ready(function () {
     }
     return tempY + "-09-01";
   }
+  //vars to decide what key stages to display
+  var showKS1 = true;
+  var showKS2 = true;
 
   //CACHE DOM//
   var $commendationsContainer = $('#commendations-container');
@@ -47,12 +51,13 @@ $(document).ready(function () {
 
   //controls for filtering and printing all
   var $controlsForm = $('#controls-form');
+  var $ksFilters = $('#ks-filters');
+
   //jquery ui date picker
   var $dateInput = $('#date-filter').datepicker({
     dateFormat: 'yy-mm-dd',
     minDate: new Date(initialFilterDate),
     maxDate: 0 });
-  // $('#date-filter').attr('max', today)
   //p element to display the current filter date
   var $since = $('#since');
   renderSinceParagraph(filterDate);
@@ -139,6 +144,14 @@ $(document).ready(function () {
   $controlsForm.on('click', '#print-all-button', function (event) {
     printAllCommendations();
     return false;
+  });
+
+  $ksFilters.on('click', 'input[type="checkbox"]', function (event) {
+    if (event.target.value === 'ks1') {
+      showKS1 = event.target.checked;
+    } else if (event.target.value === 'ks2') {
+      showKS2 = event.target.checked;
+    }
   });
 
   //observe changes to auth state
