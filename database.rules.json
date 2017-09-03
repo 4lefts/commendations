@@ -11,11 +11,14 @@
       	".read": "auth.uid == $uid && auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
        	".write": "(auth.uid == $uid || root.child('admins').hasChild(auth.uid)) && auth.email.matches(/^[^0-9]+@decoyschool.co.uk$/)",
         "$key": {
-          ".validate": "newData.hasChildren(['name', 'className', 'date', 'reason', 'displayName', 'uid', 'timestamp'])",
+          ".validate": "newData.hasChildren(['name', 'className', 'keyStage', 'date', 'reason', 'displayName', 'uid', 'timestamp'])",
           "name": {
             ".validate": "newData.isString()"
           },
           "className": {
+            ".validate": "newData.isString()"
+          },
+          "keyStage": {
             ".validate": "newData.isString()"
           },
           "date": {
