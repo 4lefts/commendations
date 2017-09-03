@@ -5,14 +5,18 @@
 // $font: 'Roboto', sans-serif;
 
 //palette
-$background-colour: #EEEEEE;
-$text-colour: rgba(black, 0.7);
+$background_colour: #EEEEEE;
+$text_colour: rgba(black, 0.7);
 
 $main_colour: #689F38;
 $main_lighter: #7CB342;
 $main_darker: #558B2F;
 
-$accent_colour: #FFFF00;
+$accent_colour: #FFEA00;
+
+$ks1_colour: #AA00FF;
+$ks2_colour: #FF3D00;
+
 
 //spacing
 $gutter: 15px;
@@ -72,9 +76,9 @@ $gutter: 15px;
 }
 
 body {
-  background-color: $background-colour;
+  background-color: $background_colour;
   font-family: 'Roboto', sans-serif;
-  color: $text-colour;
+  color: $text_colour;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -133,25 +137,21 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
   h1{
     margin: 0;
     font-family: 'Shadows Into Light Two', cursive;
-    margin-top: 0.7em;
+    margin-top: 0.5em;
     display: inline-block;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .main-header{
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
 .sub-header{
   background-color: $main_darker;
   padding: 0 $gutter;
-}
-
-.commendation-header{
-  flex-direction: column;
-  div{
-    align-self: flex-end;
-  }
-  h3{
-    margin: 0.3em 0 0.7em 0;
-    display: inline-block;
-  }
 }
 
 #login-container{
@@ -185,7 +185,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button{
     font-family: 'Shadows Into Light Two', cursive;
   }
   button{
-    @include button-styles(white, $text-colour);
+    @include button-styles(white, $text_colour);
     margin-top: $gutter;
     width: 300px;
   }
@@ -214,22 +214,22 @@ form{
     margin: $gutter 0;
     padding: 10px;
     border: none;
-    border-bottom: 1px solid lighten($text-colour, 30%);
+    border-bottom: 1px solid lighten($text_colour, 30%);
     outline: none;
     &:focus{
-      border-color: $text-colour;
+      border-color: $text_colour;
     }
   }
   textarea{
     height: 100px;
-    border: 1px solid lighten($text-colour, 30%);
+    border: 1px solid lighten($text_colour, 30%);
   }
   select{
-    border-bottom: 1px solid lighten($text-colour, 30%);
-    border-right: 1px solid lighten($text-colour, 30%);
+    border-bottom: 1px solid lighten($text_colour, 30%);
+    border-right: 1px solid lighten($text_colour, 30%);
   }
   button{
-    @include button-styles($main_darker, white);
+    @include button-styles($accent_colour, $text_colour);
   }
 }
 
@@ -269,8 +269,8 @@ form{
     input{
       min-width: 50%;
       margin-right: $gutter;
-      border-bottom: 1px solid lighten($text-colour, 30%);
-      border-right: 1px solid lighten($text-colour, 30%);
+      border-bottom: 1px solid lighten($text_colour, 30%);
+      border-right: 1px solid lighten($text_colour, 30%);
     }
 
     button{
@@ -298,7 +298,7 @@ form{
         border: 1.3px solid rgba(0, 0, 0, 0.5);
         background-color: white;
         cursor: pointer;
-        &:after{
+        &::after{
           opacity: 0;
           content: '';
           position: absolute;
@@ -316,7 +316,7 @@ form{
       input[type=checkbox]:checked + label{
         background-color: $main_colour;
         border-color: $main_colour;
-        &:after{
+        &::after{
           opacity: 1;
         }
       }
@@ -349,19 +349,58 @@ form{
   margin-bottom: $gutter;
   background-color: white;
   .commendation-header{
-    background-color: $main_colour;
-    button{
-      @include button-styles(white, $text-colour);
-      &:first-child{
-        margin-right: $gutter;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: $gutter;
+    .commendation-info{
+      color: $text_colour;
+      h6{
+        margin: 0;
+      }
+      h3{
+        margin: 0.4em 0 0.4em 0;
+      }
+    }
+    .commendation-buttons{
+      display: flex;
+      flex-direction: row;
+      button{
+        @include button-styles($main_darker, white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        width: 38px;
+        border-radius: 50%;
+        &:first-child{
+          margin-right: $gutter;
+        }
       }
     }
   }
   p{
-    padding: 0 $gutter;
-    &:last-child{
-      padding-bottom: $gutter;
-    }
+    margin: $gutter;
+    font-size: 0.8em;
+  }
+  p.commendation-reason{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ks1{
+  .commendation-header{
+    border-bottom: 2px solid $ks1_colour;
+  }
+}
+
+.ks2{
+  .commendation-header{
+    border-bottom: 2px solid $ks2_colour;
   }
 }
 

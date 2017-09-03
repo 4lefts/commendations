@@ -152,6 +152,16 @@ $(document).ready(function () {
     } else if (event.target.value === 'ks2') {
       showKS2 = event.target.checked;
     }
+    if (showKS1) {
+      $commendationsContainer.find('div.ks1').removeClass('hidden');
+    } else {
+      $commendationsContainer.find('div.ks1').addClass('hidden');
+    }
+    if (showKS2) {
+      $commendationsContainer.find('div.ks2').removeClass('hidden');
+    } else {
+      $commendationsContainer.find('div.ks2').addClass('hidden');
+    }
   });
 
   //observe changes to auth state
@@ -242,9 +252,11 @@ $(document).ready(function () {
     var d = new Date();
     var t = d.getTime();
     var today = makeDateString(d);
+    var keyStage = calcKeyStage(className);
     var newData = {
       name: name,
       className: className,
+      keyStage: keyStage,
       date: today,
       reason: reason,
       displayName: usr.displayName,
@@ -257,6 +269,7 @@ $(document).ready(function () {
     }).catch(function (error) {
       //error popup here
       console.log(error);
+      console.log(newData);
     }); //error handler in here?
   }
 
@@ -280,6 +293,17 @@ $(document).ready(function () {
       } else {
         return '0' + s;
       }
+    }
+  }
+
+  //helper function to work out key stage for a student's class
+  function calcKeyStage(c) {
+    var ks1Classes = ["Butterflies", "Ladybirds", "Woodpeckers", "Wrens", "Chaffinches", "Partridges"];
+    var ks2Classes = ["Puffins", "Swans", "Kingfishers", "Mallards", "Kestrels", "Owls", "Eagles", "Falcons"];
+    if (ks1Classes.includes(c)) {
+      return 'ks1';
+    } else if (ks2Classes.includes(c)) {
+      return 'ks2';
     }
   }
 
@@ -309,7 +333,8 @@ $(document).ready(function () {
   //called when children are added to db reference
   function renderCommendation(snapshot) {
     var val = snapshot.val();
-    var html = "\n      <div class=\"commendation\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"header commendation-header\">\n          <h3><span class=\"commendation-name\">" + val.name + "</span> - <span class=\"commendation-class\">" + val.className + "</span> - <span class=\"commendation-date\">(" + val.date + ")</span></h3>\n          <div>\n            <button class=\"print-btn\">Print</button>\n            <button class=\"delete-btn\">Delete</button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n        <p class=\"commendation-by\">By " + val.displayName + "</p>\n      </div>\n      ";
+    var hide = val.keyStage === 'ks1' && showKS1 || val.keyStage === 'ks2' && showKS2 ? '' : 'hidden';
+    var html = "\n      <div class=\"commendation " + val.keyStage + " " + hide + "\" data-id=\"" + snapshot.key + "\" data-owner=\"" + val.uid + "\">\n        <div class=\"commendation-header\">\n          <div class=\"commendation-info\">\n            <h6><span class=\"commendation-date\">" + val.date + "</span><span class=\"commendation-by\">, by " + val.displayName + "</span></h6>\n            <h3 class=\"commendation-name\">" + val.name + "</h3>\n            <h6 class=\"commendation-class\">" + val.className + "</h6>\n          </div>\n          <div class=\"commendation-buttons\">\n            <button class=\"print-btn\"><img src=\"./images/print.svg\" alt=\"print button\"></button>\n            <button class=\"delete-btn\"><img src=\"./images/delete.svg\" alt=\"delete button\"></button>\n          </div>\n        </div>\n        <p class=\"commendation-reason\">" + val.reason + "</p>\n      </div>\n      ";
     $commendationsContainer.prepend(html);
   }
 
@@ -328,13 +353,14 @@ $(document).ready(function () {
     $('.printing').remove();
   }
 
-  //called by the print buttons
+  //called by the print all button
   function printAllCommendations(event) {
     var html = '';
     $('.commendation').each(function (index, value) {
       var $curCommendation = $(value);
-
-      html += renderPrintCommendation($curCommendation);
+      if (!$curCommendation.hasClass('hidden')) {
+        html += renderPrintCommendation($curCommendation);
+      }
     });
     $commendationsContainer.append(html);
     window.print();
@@ -349,7 +375,7 @@ $(document).ready(function () {
     var name = $commendation.find('.commendation-name').html();
     var schoolClass = $commendation.find('.commendation-class').html();
     //slice brackets off date and reverse
-    var date = $commendation.find('.commendation-date').html().slice(1, -1).split('-').reverse().join('/');
+    var date = $commendation.find('.commendation-date').html().split('-').reverse().join('/');
     //get reason and author
     var reason = $commendation.find('.commendation-reason').html();
     //slice off the word 'by'

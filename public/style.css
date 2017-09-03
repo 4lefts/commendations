@@ -505,7 +505,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   max-width: 200px;
   padding: 0 30px;
   color: rgba(0, 0, 0, 0.7);
-  background-color: #FFFF00;
+  background-color: #FFEA00;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
@@ -514,7 +514,7 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #FFFF00;
+  border: 1px solid #FFEA00;
   border-radius: 2px;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   transition: all .3s ease;
@@ -538,28 +538,22 @@ h1, h2, h3, h4, h5, h6, input, textarea, button {
 .main-header h1 {
   margin: 0;
   font-family: 'Shadows Into Light Two', cursive;
-  margin-top: 0.7em;
+  margin-top: 0.5em;
   display: inline-block;
+}
+
+@media screen and (min-width: 768px) {
+  .main-header {
+    -ms-flex-direction: row;
+        flex-direction: row;
+    -ms-flex-pack: justify;
+        justify-content: space-between;
+  }
 }
 
 .sub-header {
   background-color: #558B2F;
   padding: 0 15px;
-}
-
-.commendation-header {
-  -ms-flex-direction: column;
-      flex-direction: column;
-}
-
-.commendation-header div {
-  -ms-flex-item-align: end;
-      align-self: flex-end;
-}
-
-.commendation-header h3 {
-  margin: 0.3em 0 0.7em 0;
-  display: inline-block;
 }
 
 #login-container {
@@ -680,8 +674,8 @@ form button {
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: rgba(255, 255, 255, 0.7);
-  background-color: #558B2F;
+  color: rgba(0, 0, 0, 0.7);
+  background-color: #FFEA00;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
@@ -690,7 +684,7 @@ form button {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #558B2F;
+  border: 1px solid #FFEA00;
   border-radius: 2px;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   transition: all .3s ease;
@@ -804,7 +798,7 @@ form button:hover, form button:focus {
   cursor: pointer;
 }
 
-#controls-form #ks-filters .ks-filter label:after {
+#controls-form #ks-filters .ks-filter label::after {
   opacity: 0;
   content: '';
   position: absolute;
@@ -824,7 +818,7 @@ form button:hover, form button:focus {
   border-color: #689F38;
 }
 
-#controls-form #ks-filters .ks-filter input[type=checkbox]:checked + label:after {
+#controls-form #ks-filters .ks-filter input[type=checkbox]:checked + label::after {
   opacity: 1;
 }
 
@@ -864,16 +858,44 @@ form button:hover, form button:focus {
 }
 
 .commendation .commendation-header {
-  background-color: #689F38;
+  box-sizing: border-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
+  padding: 15px;
 }
 
-.commendation .commendation-header button {
+.commendation .commendation-header .commendation-info {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.commendation .commendation-header .commendation-info h6 {
+  margin: 0;
+}
+
+.commendation .commendation-header .commendation-info h3 {
+  margin: 0.4em 0 0.4em 0;
+}
+
+.commendation .commendation-header .commendation-buttons {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+      flex-direction: row;
+}
+
+.commendation .commendation-header .commendation-buttons button {
   box-sizing: border-box;
   height: 38px;
   max-width: 200px;
   padding: 0 30px;
-  color: rgba(0, 0, 0, 0.7);
-  background-color: white;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: #558B2F;
   font-size: 0.8em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   line-height: 38px;
@@ -882,27 +904,47 @@ form button:hover, form button:focus {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid white;
+  border: 1px solid #558B2F;
   border-radius: 2px;
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
   transition: all .3s ease;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  padding: 0;
+  width: 38px;
+  border-radius: 50%;
 }
 
-.commendation .commendation-header button:hover, .commendation .commendation-header button:focus {
+.commendation .commendation-header .commendation-buttons button:hover, .commendation .commendation-header .commendation-buttons button:focus {
   outline: 0;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
 }
 
-.commendation .commendation-header button:first-child {
+.commendation .commendation-header .commendation-buttons button:first-child {
   margin-right: 15px;
 }
 
 .commendation p {
-  padding: 0 15px;
+  margin: 15px;
+  font-size: 0.8em;
 }
 
-.commendation p:last-child {
-  padding-bottom: 15px;
+.commendation p.commendation-reason {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ks1 .commendation-header {
+  border-bottom: 2px solid #AA00FF;
+}
+
+.ks2 .commendation-header {
+  border-bottom: 2px solid #FF3D00;
 }
 
 @media screen and (min-width: 760px) {
