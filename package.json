@@ -4,6 +4,7 @@
   "description": "Commendations system for Decoy School",
   "main": "index.js",
   "dependencies": {
+    "browser-sync": "^2.18.13",
     "node-sass": "^4.5.3"
   },
   "devDependencies": {
